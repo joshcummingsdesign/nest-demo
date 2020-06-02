@@ -1,4 +1,11 @@
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -8,17 +15,17 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Post()
-  createCat(@Body() createCatDto: CreateCatDto): Cat {
+  createCat(@Body() createCatDto: CreateCatDto): Promise<Cat> {
     return this.catsService.create(createCatDto);
   }
 
   @Get()
-  getAllCats(): Cat[] {
+  getAllCats(): Promise<Cat[]> {
     return this.catsService.findAll();
   }
 
-  @Get(':name')
-  getCat(@Param('name') name: string): Cat {
-    return this.catsService.findByName(name);
+  @Get(':id')
+  getCat(@Param('id', ParseIntPipe) id: number): Promise<Cat> {
+    return this.catsService.findOne(id);
   }
 }
