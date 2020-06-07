@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Availability, Lesson } from '.';
+import { Lesson } from 'src/lesson/entities';
+import { Availability } from 'src/availability/entities';
 
 export const userTypes = <const>['student', 'teacher'];
 export type UserType = typeof userTypes[number];
