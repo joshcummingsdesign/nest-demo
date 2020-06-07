@@ -15,6 +15,7 @@ export class AvailabilityService {
     userId: number,
     availability: AddAvailabilityDto,
   ): Promise<Availability> {
+    // Check to make sure you are not already available at this time
     return this.availabilityRepository.save({ ...availability, userId });
   }
 
@@ -33,6 +34,7 @@ export class AvailabilityService {
   }
 
   async deleteAvailability(userId: number, id: number): Promise<Availability> {
+    // TODO: Check to make sure there is not a lesson at this time
     const availability = await this.findOneAvailability(userId, id);
     await this.availabilityRepository.delete(id);
     return availability;

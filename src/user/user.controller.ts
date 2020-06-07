@@ -21,16 +21,19 @@ export class UserController {
     return this.userService.create(user);
   }
 
+  // TODO: Change to get all teachers
   @Get()
   getAllUsers(): Promise<User[]> {
     return this.userService.findAll();
   }
 
+  // TODO: Change to get self
   @Get(':id')
   getUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.userService.findOne(id);
   }
 
+  // TODO: Change to update self
   @Patch(':id')
   updateUser(
     @Param('id', ParseIntPipe) id: number,
@@ -39,6 +42,8 @@ export class UserController {
     return this.userService.update(id, user);
   }
 
+  // TODO: Change to delete self
+  // TODO: When deleting a user, delete availability and lessons
   @Delete(':id')
   deleteUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.userService.delete(id);

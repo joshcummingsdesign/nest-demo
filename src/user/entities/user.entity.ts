@@ -2,8 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Lesson } from 'src/lesson/entities';
 import { Availability } from 'src/availability/entities';
 
-export const userTypes = <const>['student', 'teacher'];
-export type UserType = typeof userTypes[number];
+export const roles = <const>['student', 'teacher'];
+export type Role = typeof roles[number];
 
 @Entity()
 export class User {
@@ -23,7 +23,7 @@ export class User {
   instrument: string;
 
   @Column()
-  type: UserType;
+  role: Role;
 
   @OneToMany(() => Availability, (availability) => availability.user)
   availability: Availability;

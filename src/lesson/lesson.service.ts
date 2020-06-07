@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lesson } from './entities';
 import { BookLessonDto } from './dto';
-import { UserType } from 'src/user/entities';
+import { Role } from 'src/user/entities';
 
 @Injectable()
 export class LessonService {
@@ -13,12 +13,14 @@ export class LessonService {
   ) {}
 
   createLesson(userId: number, lesson: BookLessonDto): Promise<Lesson> {
+    // TODO: Make sure the teacher is available at this time
+    // TODO: Update availability at this time to false
     return this.lessonRepository.save({ ...lesson, studentId: userId });
   }
 
-  findAllLessons(userId: number, type?: UserType): Promise<Lesson[]> {
+  findAllLessons(userId: number, role: Role): Promise<Lesson[]> {
     return this.lessonRepository.find({
-      where: type === 'teacher' ? { teacherId: userId } : { studentId: userId },
+      where: role === 'teacher' ? { teacherId: userId } : { studentId: userId },
     });
   }
 
@@ -36,6 +38,7 @@ export class LessonService {
   }
 
   async deleteLesson(userId: number, id: number): Promise<Lesson> {
+    // TODO: Update the teacher's availability when cancelling
     const lesson = await this.findOneLesson(userId, id);
     await this.lessonRepository.delete(id);
     return lesson;

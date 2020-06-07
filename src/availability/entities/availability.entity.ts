@@ -18,6 +18,9 @@ export class Availability {
   @Column()
   time: string;
 
+  @Column({ default: true })
+  available: boolean;
+
   @Column()
   userId: number;
   @ManyToOne(() => User, (user) => user.availability)

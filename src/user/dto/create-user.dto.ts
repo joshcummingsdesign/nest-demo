@@ -1,5 +1,5 @@
 import { IsString, IsIn } from 'class-validator';
-import { userTypes, UserType } from '../entities';
+import { roles, Role } from '../entities';
 
 export class CreateUserDto {
   @IsString()
@@ -14,6 +14,6 @@ export class CreateUserDto {
   @IsString()
   instrument: string;
 
-  @IsIn(userTypes as any)
-  type: UserType;
+  @IsIn(roles as any)
+  type: Role;
 }

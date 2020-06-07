@@ -4,13 +4,13 @@ import {
   Get,
   Body,
   Param,
-  Headers,
   ParseIntPipe,
   Delete,
 } from '@nestjs/common';
 import { Availability } from './entities';
 import { AvailabilityService } from './availability.service';
 import { AddAvailabilityDto } from './dto';
+import { user } from 'src/auth.mock';
 
 @Controller('api/v1/availability')
 export class AvailabilityController {
@@ -19,20 +19,17 @@ export class AvailabilityController {
   @Post()
   addAvailability(
     @Body() availability: AddAvailabilityDto,
-    @Headers('authorization') authorization: string,
   ): Promise<Availability> {
-    // TODO: Should come from authenticated user
-    const userId = parseInt(authorization);
-    return this.availabilityService.createAvailability(userId, availability);
+    // TODO: Only a teacher can add a time they are available
+    // TODO: user should come from auth
+    return this.availabilityService.createAvailability(user.id, availability);
   }
 
   @Get()
-  getMyAvailability(
-    @Headers('authorization') authorization: string,
-  ): Promise<Availability[]> {
-    // TODO: Should come from authenticated user
-    const userId = parseInt(authorization);
-    return this.availabilityService.findAllAvailability(userId);
+  getMyAvailability(): Promise<Availability[]> {
+    // TODO: Only a teacher can check their availability
+    // TODO: user should come from auth
+    return this.availabilityService.findAllAvailability(user.id);
   }
 
   @Get(':userId')
@@ -42,13 +39,13 @@ export class AvailabilityController {
     return this.availabilityService.findAllAvailability(userId);
   }
 
+  // TODO: Add update availability route, only a teacher can update their own availability
+
   @Delete(':id')
   deleteAvailability(
     @Param('id', ParseIntPipe) id: number,
-    @Headers('authorization') authorization: string,
   ): Promise<Availability> {
-    // TODO: Should come from authenticated user
-    const userId = parseInt(authorization);
-    return this.availabilityService.deleteAvailability(userId, id);
+    // TODO: user should come from auth
+    return this.availabilityService.deleteAvailability(user.id, id);
   }
 }
