@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Lesson } from 'src/lesson/entities';
 import { Availability } from 'src/availability/entities';
+import { Auth } from 'src/auth/entities';
 
 export const roles = <const>['student', 'teacher'];
 export type Role = typeof roles[number];
@@ -24,6 +31,9 @@ export class User {
 
   @Column()
   role: Role;
+
+  @OneToOne(() => Auth, (auth) => auth.user)
+  auth: Auth;
 
   @OneToMany(() => Availability, (availability) => availability.user)
   availability: Availability;

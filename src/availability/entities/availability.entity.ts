@@ -13,6 +13,9 @@ export class Availability {
   id: number;
 
   @Column()
+  userId: number;
+
+  @Column()
   date: string;
 
   @Column()
@@ -21,8 +24,6 @@ export class Availability {
   @Column({ default: true })
   available: boolean;
 
-  @Column()
-  userId: number;
   @ManyToOne(() => User, (user) => user.availability)
   @JoinColumn({ name: 'userId' })
   user: User;

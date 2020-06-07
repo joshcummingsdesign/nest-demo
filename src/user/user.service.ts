@@ -7,12 +7,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities';
 import { CreateUserDto, UpdateUserDto } from './dto';
+import { Auth } from 'src/auth/entities';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Auth)
+    private authRepository: Repository<Auth>,
   ) {}
 
   async create(user: CreateUserDto): Promise<User> {
@@ -22,7 +25,12 @@ export class UserService {
     if (existingUser) {
       throw new ConflictException('User email already exists');
     }
-    return this.userRepository.save(user);
+    const createdUser = await this.userRepository.save(user);
+    this.authRepository.save({
+      userId: createdUser.id,
+      password: createdUser.password,
+    });
+    return createdUser;
   }
 
   findAll(): Promise<User[]> {
@@ -31,6 +39,18 @@ export class UserService {
 
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
+
+  async findByEmail(
+    email: string,
+    options: { withAuth: boolean },
+  ): Promise<User> {
+    const relations = options.withAuth ? ['auth'] : undefined;
+    const user = await this.userRepository.findOne({ email }, { relations });
     if (!user) {
       throw new NotFoundException('User not found');
     }

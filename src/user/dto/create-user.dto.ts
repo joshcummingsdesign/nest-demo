@@ -12,8 +12,11 @@ export class CreateUserDto {
   email: string;
 
   @IsString()
+  password: string;
+
+  @IsString()
   instrument: string;
 
   @IsIn(roles as any)
-  type: Role;
+  role: Role;
 }

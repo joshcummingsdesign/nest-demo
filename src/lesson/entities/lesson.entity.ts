@@ -14,19 +14,21 @@ export class Lesson {
 
   @Column()
   studentId: number;
-  @ManyToOne(() => User, (user) => user.lessonsToTake)
-  @JoinColumn({ name: 'studentId' })
-  student: User;
 
   @Column()
   teacherId: number;
-  @ManyToOne(() => User, (user) => user.lessonsToTeach)
-  @JoinColumn({ name: 'teacherId' })
-  teacher: User;
 
   @Column()
   date: string;
 
   @Column()
   time: string;
+
+  @ManyToOne(() => User, (user) => user.lessonsToTake)
+  @JoinColumn({ name: 'studentId' })
+  student: User;
+
+  @ManyToOne(() => User, (user) => user.lessonsToTeach)
+  @JoinColumn({ name: 'teacherId' })
+  teacher: User;
 }

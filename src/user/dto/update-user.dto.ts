@@ -20,5 +20,5 @@ export class UpdateUserDto {
 
   @IsIn(roles as any)
   @IsOptional()
-  type?: Role;
+  role?: Role;
 }
