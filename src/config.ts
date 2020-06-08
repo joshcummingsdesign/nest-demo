@@ -10,7 +10,7 @@ export enum EConfigOptions {
   JWT_SECRET = 'JWT_SECRET',
 }
 
-export const validationSchema = Joi.object({
+const configOptionsSchema: { [key in EConfigOptions]: any } = {
   DB_HOST: Joi.string().required(),
   DB_PORT: Joi.number().required(),
   DB_USERNAME: Joi.string().required(),
@@ -18,4 +18,6 @@ export const validationSchema = Joi.object({
   DB_DATABASE: Joi.string().required(),
   JWT_EXPIRE_TIME: Joi.string().required(),
   JWT_SECRET: Joi.string().required(),
-});
+};
+
+export const validationSchema = Joi.object(configOptionsSchema).required();
