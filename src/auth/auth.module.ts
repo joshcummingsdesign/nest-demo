@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 import { LocalStrategy, JwtStrategy } from './strategies';
 import { UserModule } from 'src/user/user.module';
 import { AuthController } from './auth.controller';
+import { CryptoModule } from 'src/crypto/crypto.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthController } from './auth.controller';
       }),
     }),
     forwardRef(() => UserModule),
+    CryptoModule,
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [TypeOrmModule],

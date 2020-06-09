@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { Auth } from 'src/auth/entities';
+import { CryptoService } from 'src/crypto/crypto.service';
 
 @Injectable()
 export class UserService {
@@ -16,20 +17,27 @@ export class UserService {
     private userRepository: Repository<User>,
     @InjectRepository(Auth)
     private authRepository: Repository<Auth>,
+    private cryptoService: CryptoService,
   ) {}
 
   async create(user: CreateUserDto): Promise<User> {
     const existingUser = await this.userRepository.findOne({
       email: user.email,
     });
+
     if (existingUser) {
       throw new ConflictException('User email already exists');
     }
-    const createdUser = await this.userRepository.save(user);
-    this.authRepository.save({
+
+    const { password, ...userData } = user;
+    const createdUser = await this.userRepository.save(userData);
+    const hashedPassword = await this.cryptoService.hashPassword(password);
+
+    await this.authRepository.save({
       userId: createdUser.id,
-      password: createdUser.password,
+      password: hashedPassword,
     });
+
     return createdUser;
   }
 

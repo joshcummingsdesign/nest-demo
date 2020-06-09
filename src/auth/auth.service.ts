@@ -1,14 +1,20 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import { User } from 'src/user/entities';
 import { UserService } from 'src/user/user.service';
 import { IJwtPayload } from './interfaces';
+import { ConfigService } from '@nestjs/config';
+import { EConfigOptions } from 'src/config';
+import { CryptoService } from 'src/crypto/crypto.service';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private configService: ConfigService,
     private userService: UserService,
     private jwtService: JwtService,
+    private cryptoService: CryptoService,
   ) {}
 
   async validateUser(payload: {
@@ -18,9 +24,16 @@ export class AuthService {
     const user = await this.userService.findByEmail(payload.email, {
       withAuth: true,
     });
-    if (user.auth.password !== payload.password) {
+
+    const isValidPassword = this.cryptoService.comparePassword(
+      payload.password,
+      user.auth.password,
+    );
+
+    if (!isValidPassword) {
       throw new UnauthorizedException();
     }
+
     const { auth, ...result } = user;
     return result as User;
   }
