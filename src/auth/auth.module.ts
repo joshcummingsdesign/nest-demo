@@ -18,9 +18,11 @@ import { CryptoModule } from 'src/crypto/crypto.module';
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>(EConfigOptions.JWT_SECRET),
+        privateKey: configService.get<string>(EConfigOptions.JWT_PRIVATE_KEY),
+        publicKey: configService.get<string>(EConfigOptions.JWT_PUBLIC_KEY),
         signOptions: {
           expiresIn: configService.get<string>(EConfigOptions.JWT_EXPIRE_TIME),
+          algorithm: 'RS256',
         },
       }),
     }),

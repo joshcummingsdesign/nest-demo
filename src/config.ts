@@ -8,7 +8,8 @@ export enum EConfigOptions {
   DB_DATABASE = 'DB_DATABASE',
   CRYPTO_SALT_ROUNDS = 'CRYPTO_SALT_ROUNDS',
   JWT_EXPIRE_TIME = 'JWT_EXPIRE_TIME',
-  JWT_SECRET = 'JWT_SECRET',
+  JWT_PRIVATE_KEY = 'JWT_PRIVATE_KEY',
+  JWT_PUBLIC_KEY = 'JWT_PUBLIC_KEY',
 }
 
 const configOptionsSchema: { [key in EConfigOptions]: any } = {
@@ -19,7 +20,8 @@ const configOptionsSchema: { [key in EConfigOptions]: any } = {
   DB_DATABASE: Joi.string().required(),
   CRYPTO_SALT_ROUNDS: Joi.number().required(),
   JWT_EXPIRE_TIME: Joi.string().required(),
-  JWT_SECRET: Joi.string().required(),
+  JWT_PRIVATE_KEY: Joi.string().required(),
+  JWT_PUBLIC_KEY: Joi.string().required(),
 };
 
 export const validationSchema = Joi.object(configOptionsSchema).required();
