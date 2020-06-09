@@ -44,6 +44,7 @@ export class UserController {
 
   // TODO: Change to delete self
   // TODO: When deleting a user, delete availability and lessons
+  // TODO: Logout
   @Delete(':id')
   deleteUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return this.userService.delete(id);

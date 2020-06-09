@@ -55,9 +55,9 @@ export class UserService {
 
   async findByEmail(
     email: string,
-    options: { withAuth: boolean },
+    options?: { withAuth: boolean },
   ): Promise<User> {
-    const relations = options.withAuth ? ['auth'] : undefined;
+    const relations = options && options.withAuth ? ['auth'] : undefined;
     const user = await this.userRepository.findOne({ email }, { relations });
     if (!user) {
       throw new NotFoundException('User not found');
