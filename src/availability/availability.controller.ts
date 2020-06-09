@@ -10,6 +10,7 @@ import {
 import { Availability } from './entities';
 import { AvailabilityService } from './availability.service';
 import { AddAvailabilityDto } from './dto';
+// TODO: Delete the auth.mock file
 import { user } from 'src/auth.mock';
 
 @Controller('api/v1/availability')
