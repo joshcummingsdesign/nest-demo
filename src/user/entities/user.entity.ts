@@ -5,9 +5,9 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import { Lesson } from 'src/lesson/entities';
-import { Availability } from 'src/availability/entities';
-import { Auth } from 'src/auth/entities';
+import { Lesson } from '../../lesson/entities';
+import { Availability } from '../../availability/entities';
+import { Auth } from '../../auth/entities';
 
 export const roles = <const>['student', 'teacher'];
 export type Role = typeof roles[number];

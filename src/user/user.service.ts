@@ -7,8 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities';
 import { CreateUserDto, UpdateUserDto } from './dto';
-import { Auth } from 'src/auth/entities';
-import { CryptoService } from 'src/crypto/crypto.service';
+import { Auth } from '../auth/entities';
+import { CryptoService } from '../crypto/crypto.service';
 
 @Injectable()
 export class UserService {

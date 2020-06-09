@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { AuthModule } from 'src/auth/auth.module';
-import { CryptoModule } from 'src/crypto/crypto.module';
+import { AuthModule } from '../auth/auth.module';
+import { CryptoModule } from '../crypto/crypto.module';
 
 @Module({
   imports: [

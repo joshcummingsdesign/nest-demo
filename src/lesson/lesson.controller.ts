@@ -10,7 +10,7 @@ import {
 import { Lesson } from './entities';
 import { LessonService } from './lesson.service';
 import { BookLessonDto } from './dto';
-import { user } from 'src/auth.mock';
+import { user } from '../auth.mock';
 
 @Controller('api/v1/lessons')
 export class LessonController {

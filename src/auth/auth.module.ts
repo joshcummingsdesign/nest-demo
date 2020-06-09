@@ -3,13 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { EConfigOptions } from 'src/config';
+import { EConfigOptions } from '../config';
 import { Auth } from './entities';
 import { AuthService } from './auth.service';
 import { LocalStrategy, JwtStrategy } from './strategies';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from '../user/user.module';
 import { AuthController } from './auth.controller';
-import { CryptoModule } from 'src/crypto/crypto.module';
+import { CryptoModule } from '../crypto/crypto.module';
 
 @Module({
   imports: [

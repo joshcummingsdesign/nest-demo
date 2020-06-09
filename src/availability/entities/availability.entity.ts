@@ -5,7 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { User } from 'src/user/entities';
+import { User } from '../../user/entities';
 
 @Entity()
 export class Availability {
