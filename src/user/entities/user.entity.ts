@@ -36,7 +36,7 @@ export class User {
   auth: Auth;
 
   @OneToMany(() => Availability, (availability) => availability.user)
-  availability: Availability;
+  availability: Availability[];
 
   @OneToMany(() => Lesson, (lesson) => lesson.studentId)
   lessonsToTake: Lesson[];

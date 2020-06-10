@@ -1,19 +1,25 @@
+import { User } from '../user/entities';
+import { Auth } from '../auth/entities';
+import { CreateUserDto, UpdateUserDto } from '../user/dto';
 import { auth } from './auth';
 
-export const user: any = {
+export const user: Omit<User, 'auth'> = {
   id: 1,
   firstName: 'Josh',
   lastName: 'Cummings',
   email: 'joshcummingsdesign@gmail.com',
   instrument: 'Bass',
   role: 'student',
+  availability: [],
+  lessonsToTake: [],
+  lessonsToTeach: [],
 };
 
-export const userAuth: any = { ...user, auth };
+export const userAuth: User = { ...user, auth: auth as Auth };
 
-export const users: any[] = [user];
+export const users: Omit<User, 'auth'>[] = [user];
 
-export const createUserDto: any = {
+export const createUserDto: CreateUserDto = {
   firstName: 'Josh',
   lastName: 'Cummings',
   email: 'joshcummingsdesign@gmail.com',
@@ -22,7 +28,7 @@ export const createUserDto: any = {
   role: 'student',
 };
 
-export const updateUserDto: any = {
+export const updateUserDto: UpdateUserDto = {
   firstName: 'Josh',
   lastName: 'Cummings',
   email: 'joshcummingsdesign@gmail.com',

@@ -8,7 +8,7 @@ import { CryptoService } from '../crypto/crypto.service';
 import { mockAuthRepository } from './__mocks__/auth.repository';
 import { mockUserService } from '../user/__mocks__/user.service';
 import { mockCryptoService } from '../crypto/__mocks__/crypto.service';
-import { user, createUserDto, userAuth } from '../__fixtures__';
+import { user, userAuth, createUserDto } from '../__fixtures__';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -73,7 +73,7 @@ describe('AuthService', () => {
     it('should authenticate a user', () => {
       jest.spyOn(jwtService, 'sign');
 
-      expect(authService.login(user)).toMatchObject({
+      expect(authService.login(userAuth)).toMatchObject({
         access_token: expect.any(String),
       });
 

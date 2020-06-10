@@ -31,7 +31,8 @@ describe('UserController', () => {
       const expectedResult = await userService.create(createUserDto);
 
       await request(app.getHttpServer())
-        .post('/api/v1/users', createUserDto)
+        .post('/api/v1/users')
+        .send(createUserDto)
         .expect(201)
         .expect(expectedResult);
     });
@@ -42,7 +43,8 @@ describe('UserController', () => {
       });
 
       await request(app.getHttpServer())
-        .post('/api/v1/users', createUserDto)
+        .post('/api/v1/users')
+        .send(createUserDto)
         .expect(409);
     });
   });
@@ -82,7 +84,8 @@ describe('UserController', () => {
       const expectedResult = await userService.update(1, updateUserDto);
 
       await request(app.getHttpServer())
-        .patch('/api/v1/users/1', updateUserDto)
+        .patch('/api/v1/users/1')
+        .send(updateUserDto)
         .expect(200)
         .expect(expectedResult);
     });

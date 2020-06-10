@@ -79,7 +79,7 @@ describe('UserService', () => {
     it('should throw if user not found', () => {
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
 
-      expect(userService.findByEmail(user.id)).rejects.toThrow(
+      expect(userService.findByEmail(user.email)).rejects.toThrow(
         'User not found',
       );
     });
