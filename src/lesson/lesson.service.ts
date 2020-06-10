@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lesson } from './entities';
-import { BookLessonDto } from './dto';
+import { CreateLessonDto } from './dto';
 import { Role } from '../user/entities';
 
 @Injectable()
@@ -12,19 +12,19 @@ export class LessonService {
     private lessonRepository: Repository<Lesson>,
   ) {}
 
-  createLesson(userId: number, lesson: BookLessonDto): Promise<Lesson> {
+  create(userId: number, lesson: CreateLessonDto): Promise<Lesson> {
     // TODO: Make sure the teacher is available at this time
     // TODO: Update availability at this time to false
     return this.lessonRepository.save({ ...lesson, studentId: userId });
   }
 
-  findAllLessons(userId: number, role: Role): Promise<Lesson[]> {
+  findAll(userId: number, role: Role): Promise<Lesson[]> {
     return this.lessonRepository.find({
       where: role === 'teacher' ? { teacherId: userId } : { studentId: userId },
     });
   }
 
-  async findOneLesson(userId: number, id: number): Promise<Lesson> {
+  async findOne(userId: number, id: number): Promise<Lesson> {
     const lesson = await this.lessonRepository.findOne({
       where: [
         { id, studentId: userId },
@@ -37,9 +37,9 @@ export class LessonService {
     return lesson;
   }
 
-  async deleteLesson(userId: number, id: number): Promise<Lesson> {
+  async delete(userId: number, id: number): Promise<Lesson> {
     // TODO: Update the teacher's availability when cancelling
-    const lesson = await this.findOneLesson(userId, id);
+    const lesson = await this.findOne(userId, id);
     await this.lessonRepository.delete(id);
     return lesson;
   }

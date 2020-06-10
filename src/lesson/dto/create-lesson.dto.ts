@@ -1,6 +1,6 @@
 import { IsString, IsNumber } from 'class-validator';
 
-export class BookLessonDto {
+export class CreateLessonDto {
   @IsNumber()
   teacherId: number;
 

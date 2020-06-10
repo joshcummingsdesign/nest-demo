@@ -1,5 +1,5 @@
-import { IJwtPayload } from 'src/auth/interfaces';
-import { Auth } from 'src/auth/entities';
+import { IJwtPayload } from '../auth/interfaces';
+import { Auth } from '../auth/entities';
 
 export const auth: Omit<Auth, 'user'> = {
   userId: 1,

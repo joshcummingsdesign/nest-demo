@@ -3,21 +3,30 @@ import { Auth } from '../auth/entities';
 import { CreateUserDto, UpdateUserDto } from '../user/dto';
 import { auth } from './auth';
 
-export const user: Omit<User, 'auth'> = {
+type ParitalUser = Omit<
+  User,
+  'auth' | 'availability' | 'lessonsToTake' | 'lessonsToTeach'
+>;
+
+export const user: ParitalUser = {
   id: 1,
   firstName: 'Josh',
   lastName: 'Cummings',
   email: 'joshcummingsdesign@gmail.com',
   instrument: 'Bass',
   role: 'student',
+};
+
+export const userFull: Omit<User, 'auth'> = {
+  ...user,
   availability: [],
   lessonsToTake: [],
   lessonsToTeach: [],
 };
 
-export const userAuth: User = { ...user, auth: auth as Auth };
+export const userAuth: User = { ...userFull, auth: auth as Auth };
 
-export const users: Omit<User, 'auth'>[] = [user];
+export const users: ParitalUser[] = [user];
 
 export const createUserDto: CreateUserDto = {
   firstName: 'Josh',
