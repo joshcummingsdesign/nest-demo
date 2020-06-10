@@ -10,7 +10,7 @@ describe('AvailabilityController', () => {
   let app: INestApplication;
   let availabilityService: AvailabilityService;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module = await Test.createTestingModule({
       controllers: [AvailabilityController],
       providers: [
@@ -22,6 +22,10 @@ describe('AvailabilityController', () => {
     availabilityService = module.get<AvailabilityService>(AvailabilityService);
 
     await app.init();
+  });
+
+  afterEach(async () => {
+    await app.close();
   });
 
   describe('/api/v1/availability (POST)', () => {
@@ -70,9 +74,5 @@ describe('AvailabilityController', () => {
         .expect(200)
         .expect(expectedResult);
     });
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

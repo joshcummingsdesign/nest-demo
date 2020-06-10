@@ -10,7 +10,7 @@ describe('LessonController', () => {
   let app: INestApplication;
   let lessonService: LessonService;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module = await Test.createTestingModule({
       controllers: [LessonController],
       providers: [{ provide: LessonService, useFactory: mockLessonService }],
@@ -20,6 +20,10 @@ describe('LessonController', () => {
     lessonService = module.get<LessonService>(LessonService);
 
     await app.init();
+  });
+
+  afterEach(async () => {
+    await app.close();
   });
 
   describe('/api/v1/lessons (POST)', () => {
@@ -55,9 +59,5 @@ describe('LessonController', () => {
         .expect(200)
         .expect(expectedResult);
     });
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

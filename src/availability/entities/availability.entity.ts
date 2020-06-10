@@ -24,7 +24,7 @@ export class Availability {
   @Column({ default: true })
   available: boolean;
 
-  @ManyToOne(() => User, (user) => user.availability)
+  @ManyToOne(() => User, (user) => user.availability, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
 }

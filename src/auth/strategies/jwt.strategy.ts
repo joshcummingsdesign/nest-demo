@@ -5,6 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { EConfigOptions } from '../../config';
 import { User } from '../../user/entities';
 import { AuthService } from '../auth.service';
+import { IJwtPayload } from '../interfaces';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -20,10 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: { username: string; sub: number }): Promise<User> {
-    return this.authService.validateJwtPayload({
-      id: payload.sub,
-      email: payload.username,
-    });
+  validate(payload: IJwtPayload): Promise<User> {
+    return this.authService.authenticate(payload);
   }
 }

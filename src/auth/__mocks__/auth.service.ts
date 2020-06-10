@@ -1,7 +1,7 @@
-import { user, jwtPayload } from '../../__fixtures__';
+import { user, loginPayload } from '../../__fixtures__';
 
 export const mockAuthService = jest.fn().mockImplementation(() => ({
   validateUser: jest.fn(() => Promise.resolve(user)),
-  login: jest.fn(() => jwtPayload),
+  login: jest.fn(() => loginPayload),
   validateJwtPayload: jest.fn(() => Promise.resolve(user)),
 }));

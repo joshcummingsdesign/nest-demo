@@ -1,3 +1,4 @@
 export interface IJwtPayload {
-  access_token: string;
+  username: string;
+  sub: number;
 }

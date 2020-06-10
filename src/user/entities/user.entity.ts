@@ -8,9 +8,14 @@ import {
 import { Lesson } from '../../lesson/entities';
 import { Availability } from '../../availability/entities';
 import { Auth } from '../../auth/entities';
+import { getEnumKeys } from '../../utils/types-utils';
 
-export const roles = <const>['student', 'teacher'];
-export type Role = typeof roles[number];
+export enum ERole {
+  student = 'student',
+  teacher = 'teacher',
+}
+export const roles = getEnumKeys(ERole);
+export type Role = keyof typeof ERole;
 
 @Entity()
 export class User {

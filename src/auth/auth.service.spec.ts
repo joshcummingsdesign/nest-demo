@@ -1,10 +1,11 @@
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Auth } from './entities';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { CryptoService } from '../crypto/crypto.service';
+import { MockJwtModule } from '../utils/test-utils';
 import { mockAuthRepository } from './__mocks__/auth.repository';
 import { mockUserService } from '../user/__mocks__/user.service';
 import { mockCryptoService } from '../crypto/__mocks__/crypto.service';
@@ -18,12 +19,7 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        JwtModule.register({
-          secret: 'secretKey',
-          signOptions: { expiresIn: '10s' },
-        }),
-      ],
+      imports: [MockJwtModule],
       providers: [
         AuthService,
         { provide: getRepositoryToken(Auth), useFactory: mockAuthRepository },
@@ -42,7 +38,7 @@ describe('AuthService', () => {
     it('should validate a user', async () => {
       expect(
         await authService.validateUser({
-          email: createUserDto.email,
+          username: createUserDto.email,
           password: createUserDto.password,
         }),
       ).toMatchObject(user);
@@ -62,7 +58,7 @@ describe('AuthService', () => {
 
       expect(
         authService.validateUser({
-          email: createUserDto.email,
+          username: createUserDto.email,
           password: createUserDto.password,
         }),
       ).rejects.toThrow('Unauthorized');
@@ -70,7 +66,7 @@ describe('AuthService', () => {
   });
 
   describe('login', () => {
-    it('should authenticate a user', () => {
+    it('should return an access token', () => {
       jest.spyOn(jwtService, 'sign');
 
       expect(authService.login(userAuth)).toMatchObject({
@@ -84,12 +80,12 @@ describe('AuthService', () => {
     });
   });
 
-  describe('validateJwtPayload', () => {
-    it('should validate user by token payload', async () => {
+  describe('authenticate', () => {
+    it('should authenticate user', async () => {
       expect(
-        await authService.validateJwtPayload({
-          id: user.id,
-          email: user.email,
+        await authService.authenticate({
+          username: user.email,
+          sub: user.id,
         }),
       ).toBe(user);
 

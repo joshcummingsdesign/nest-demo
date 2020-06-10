@@ -1,7 +1,6 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { EConfigOptions } from '../config';
 import { Auth } from './entities';
@@ -14,7 +13,6 @@ import { CryptoModule } from '../crypto/crypto.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Auth]),
-    PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({

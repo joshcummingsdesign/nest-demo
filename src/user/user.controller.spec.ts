@@ -3,27 +3,39 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
+import { ERole } from './entities';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { mockUserService } from './__mocks__/user.service';
-import { createUserDto, updateUserDto } from '../__fixtures__';
+import { MockJwtModule, getMockToken } from '../utils/test-utils';
+import { createUserDto } from '../__fixtures__';
 
 describe('UserController', () => {
   let app: INestApplication;
   let userService: UserService;
+  let jwtService: JwtService;
+  let token: string;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module = await Test.createTestingModule({
+      imports: [MockJwtModule],
       controllers: [UserController],
       providers: [{ provide: UserService, useFactory: mockUserService }],
     }).compile();
 
     app = module.createNestApplication();
     userService = module.get<UserService>(UserService);
+    jwtService = module.get<JwtService>(JwtService);
+    token = getMockToken(jwtService);
 
     await app.init();
+  });
+
+  afterEach(async () => {
+    await app.close();
   });
 
   describe('/api/v1/users (POST)', () => {
@@ -58,14 +70,32 @@ describe('UserController', () => {
         .expect(200)
         .expect(expectedResult);
     });
+
+    it('should return all teachers', async () => {
+      const expectedResult = await userService.findAll(ERole.teacher);
+
+      await request(app.getHttpServer())
+        .get('/api/v1/users?role=teacher')
+        .expect(200)
+        .expect(expectedResult);
+    });
+
+    it('should return all students', async () => {
+      const expectedResult = await userService.findAll(ERole.student);
+
+      await request(app.getHttpServer())
+        .get('/api/v1/users?role=student')
+        .expect(200)
+        .expect(expectedResult);
+    });
   });
 
-  describe('/api/v1/users/:id (GET)', () => {
+  describe('/api/v1/users/id/:userId (GET)', () => {
     it('should return a user by id', async () => {
       const expectedResult = await userService.findOne(1);
 
       await request(app.getHttpServer())
-        .get('/api/v1/users/1')
+        .get('/api/v1/users/id/1')
         .expect(200)
         .expect(expectedResult);
     });
@@ -75,34 +105,19 @@ describe('UserController', () => {
         throw new NotFoundException();
       });
 
-      await request(app.getHttpServer()).get('/api/v1/users/1').expect(404);
+      await request(app.getHttpServer()).get('/api/v1/users/id/1').expect(404);
     });
   });
 
-  describe('/api/v1/users/:id (PATCH)', () => {
-    it('should update and return a user', async () => {
-      const expectedResult = await userService.update(1, updateUserDto);
+  describe('/api/v1/users/self (GET)', () => {
+    it('should return the current user', async () => {
+      const expectedResult = await userService.findOne(1);
 
       await request(app.getHttpServer())
-        .patch('/api/v1/users/1')
-        .send(updateUserDto)
+        .get('/api/v1/users/self')
+        .set('Authorization', token)
         .expect(200)
         .expect(expectedResult);
     });
-  });
-
-  describe('/api/v1/users/:id (DELETE)', () => {
-    it('should delete and return a user', async () => {
-      const expectedResult = await userService.delete(1);
-
-      await request(app.getHttpServer())
-        .patch('/api/v1/users/1')
-        .expect(200)
-        .expect(expectedResult);
-    });
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

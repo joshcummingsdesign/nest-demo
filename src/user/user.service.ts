@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './entities';
+import { User, ERole, Role } from './entities';
 import { Auth } from '../auth/entities';
 import { CryptoService } from '../crypto/crypto.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
@@ -41,8 +41,9 @@ export class UserService {
     return createdUser;
   }
 
-  findAll(): Promise<User[]> {
-    return this.userRepository.find();
+  findAll(role?: Role): Promise<User[]> {
+    const query = role ? { role } : undefined;
+    return this.userRepository.find(query);
   }
 
   async findOne(id: number): Promise<User> {

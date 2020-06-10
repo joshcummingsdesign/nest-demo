@@ -18,4 +18,4 @@ psql $PG_CONNECTION_STRING -c "insert into auth values (1, '\$2b\$10\$3o9PNc10tK
 
 # Add teacher
 psql $PG_CONNECTION_STRING -c "insert into \"user\" values (2, 'Victor', 'Wooten', 'victorwooten@gmail.com', 'Bass', 'teacher')"
-psql $PG_CONNECTION_STRING -c "insert into auth values (1, '\$2b\$10\$3o9PNc10tKhMHuU9gcxnYeOs2Bpr9LMqefjnqiREWUkOqGLLzVL52')"
+psql $PG_CONNECTION_STRING -c "insert into auth values (2, '\$2b\$10\$3o9PNc10tKhMHuU9gcxnYeOs2Bpr9LMqefjnqiREWUkOqGLLzVL52')"

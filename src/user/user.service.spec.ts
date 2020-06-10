@@ -1,14 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './entities';
+import { User, ERole } from './entities';
 import { Auth } from '../auth/entities';
 import { UserService } from './user.service';
 import { CryptoService } from '../crypto/crypto.service';
 import { mockUserRepository } from './__mocks__/user.repository';
 import { mockAuthRepository } from '../auth/__mocks__/auth.repository';
 import { mockCryptoService } from '../crypto/__mocks__/crypto.service';
-import { user, createUserDto, auth, users } from '../__fixtures__';
+import {
+  user,
+  createUserDto,
+  auth,
+  users,
+  teachers,
+  students,
+} from '../__fixtures__';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -53,6 +60,20 @@ describe('UserService', () => {
   describe('findAll', () => {
     it('should find all users', async () => {
       expect(await userService.findAll()).toBe(users);
+      expect(userRepository.find).toHaveBeenCalledTimes(1);
+    });
+
+    it('should find all teachers', async () => {
+      jest.spyOn(userRepository, 'find').mockResolvedValue(teachers as User[]);
+
+      expect(await userService.findAll(ERole.teacher)).toBe(teachers);
+      expect(userRepository.find).toHaveBeenCalledTimes(1);
+    });
+
+    it('should find all students', async () => {
+      jest.spyOn(userRepository, 'find').mockResolvedValue(students as User[]);
+
+      expect(await userService.findAll(ERole.student)).toBe(students);
       expect(userRepository.find).toHaveBeenCalledTimes(1);
     });
   });

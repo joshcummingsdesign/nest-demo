@@ -17,6 +17,17 @@ export const user: ParitalUser = {
   role: 'student',
 };
 
+export const student = user;
+
+export const teacher: ParitalUser = {
+  id: 2,
+  firstName: 'Victor',
+  lastName: 'Wooten',
+  email: 'victorwooten@gmail.com',
+  instrument: 'Bass',
+  role: 'teacher',
+};
+
 export const userFull: Omit<User, 'auth'> = {
   ...user,
   availability: [],
@@ -26,7 +37,11 @@ export const userFull: Omit<User, 'auth'> = {
 
 export const userAuth: User = { ...userFull, auth: auth as Auth };
 
-export const users: ParitalUser[] = [user];
+export const users: ParitalUser[] = [student, teacher];
+
+export const students: ParitalUser[] = [student];
+
+export const teachers: ParitalUser[] = [teacher];
 
 export const createUserDto: CreateUserDto = {
   firstName: 'Josh',

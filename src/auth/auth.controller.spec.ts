@@ -1,5 +1,4 @@
 import { INestApplication } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AuthService } from './auth.service';
@@ -12,9 +11,8 @@ describe('UserController', () => {
   let app: INestApplication;
   let authService: AuthService;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const module = await Test.createTestingModule({
-      imports: [PassportModule],
       controllers: [AuthController],
       providers: [
         { provide: AuthService, useFactory: mockAuthService },
@@ -28,8 +26,12 @@ describe('UserController', () => {
     await app.init();
   });
 
+  afterEach(async () => {
+    await app.close();
+  });
+
   describe('/api/v1/auth/login (POST)', () => {
-    it('should authenticate user', async () => {
+    it('should log user in', async () => {
       const expectedResult = authService.login(userAuth);
 
       await request(app.getHttpServer())
@@ -41,9 +43,5 @@ describe('UserController', () => {
         .expect(201)
         .expect(expectedResult);
     });
-  });
-
-  afterAll(async () => {
-    await app.close();
   });
 });

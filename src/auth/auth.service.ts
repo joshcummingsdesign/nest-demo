@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/entities';
 import { UserService } from '../user/user.service';
-import { IJwtPayload } from './interfaces';
+import { ILocalPayload, ILoginPayload, IJwtPayload } from './interfaces';
 import { CryptoService } from '../crypto/crypto.service';
 
 @Injectable()
@@ -13,11 +13,9 @@ export class AuthService {
     private cryptoService: CryptoService,
   ) {}
 
-  async validateUser(payload: {
-    email: string;
-    password: string;
-  }): Promise<User> {
-    const user = await this.userService.findByEmail(payload.email, {
+  async validateUser(payload: ILocalPayload): Promise<User> {
+    const email = payload.username;
+    const user = await this.userService.findByEmail(email, {
       withAuth: true,
     });
 
@@ -34,17 +32,16 @@ export class AuthService {
     return result as User;
   }
 
-  login(user: User): IJwtPayload {
-    const payload = { username: user.email, sub: user.id };
+  login(user: User): ILoginPayload {
+    const payload: IJwtPayload = { username: user.email, sub: user.id };
     return { access_token: this.jwtService.sign(payload) };
   }
 
-  async validateJwtPayload(payload: {
-    id: number;
-    email: string;
-  }): Promise<User> {
-    const user = await this.userService.findOne(payload.id);
-    if (user.email !== payload.email) {
+  async authenticate(payload: IJwtPayload): Promise<User> {
+    const userId = payload.sub;
+    const email = payload.username;
+    const user = await this.userService.findOne(userId);
+    if (email !== user.email) {
       throw new UnauthorizedException();
     }
     return user;

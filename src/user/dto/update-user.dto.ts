@@ -18,7 +18,7 @@ export class UpdateUserDto {
   @IsOptional()
   instrument?: string;
 
-  @IsIn(roles as any)
+  @IsIn(roles)
   @IsOptional()
   role?: Role;
 }

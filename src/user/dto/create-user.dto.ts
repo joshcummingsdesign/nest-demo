@@ -17,6 +17,6 @@ export class CreateUserDto {
   @IsString()
   instrument: string;
 
-  @IsIn(roles as any)
+  @IsIn(roles)
   role: Role;
 }

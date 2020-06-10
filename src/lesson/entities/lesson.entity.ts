@@ -24,11 +24,11 @@ export class Lesson {
   @Column()
   time: string;
 
-  @ManyToOne(() => User, (user) => user.lessonsToTake)
+  @ManyToOne(() => User, (user) => user.lessonsToTake, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'studentId' })
   student: User;
 
-  @ManyToOne(() => User, (user) => user.lessonsToTeach)
+  @ManyToOne(() => User, (user) => user.lessonsToTeach, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'teacherId' })
   teacher: User;
 }

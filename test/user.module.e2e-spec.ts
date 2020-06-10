@@ -7,7 +7,7 @@ import { users } from '../src/__fixtures__';
 describe('UserModule (e2e)', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
