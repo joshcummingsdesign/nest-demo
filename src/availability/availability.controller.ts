@@ -23,21 +23,21 @@ export class AvailabilityController {
   ): Promise<Availability> {
     // TODO: Only a teacher can add a time they are available
     // TODO: user should come from auth
-    return this.availabilityService.createAvailability(user.id, availability);
+    return this.availabilityService.create(user.id, availability);
   }
 
   @Get()
   getMyAvailability(): Promise<Availability[]> {
     // TODO: Only a teacher can check their availability
     // TODO: user should come from auth
-    return this.availabilityService.findAllAvailability(user.id);
+    return this.availabilityService.findAll(user.id);
   }
 
-  @Get(':userId')
+  @Get('user/:userId')
   getUserAvailability(
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<Availability[]> {
-    return this.availabilityService.findAllAvailability(userId);
+    return this.availabilityService.findAll(userId);
   }
 
   // TODO: Add update availability route, only a teacher can update their own availability
@@ -47,6 +47,6 @@ export class AvailabilityController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Availability> {
     // TODO: user should come from auth
-    return this.availabilityService.deleteAvailability(user.id, id);
+    return this.availabilityService.delete(user.id, id);
   }
 }
