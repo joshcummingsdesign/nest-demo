@@ -29,8 +29,8 @@ import { CryptoModule } from '../crypto/crypto.module';
     forwardRef(() => UserModule),
     CryptoModule,
   ],
+  controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   exports: [TypeOrmModule],
-  controllers: [AuthController],
 })
 export class AuthModule {}

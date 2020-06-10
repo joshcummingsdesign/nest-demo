@@ -10,6 +10,7 @@ import { userAuth } from '../__fixtures__';
 
 describe('UserController', () => {
   let app: INestApplication;
+  let authService: AuthService;
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -22,18 +23,23 @@ describe('UserController', () => {
     }).compile();
 
     app = module.createNestApplication();
+    authService = module.get<AuthService>(AuthService);
 
     await app.init();
   });
 
   describe('/api/v1/auth/login (POST)', () => {
     it('should authenticate user', async () => {
+      const expectedResult = authService.login(userAuth);
+
       await request(app.getHttpServer())
-        .post('/api/v1/auth/login', {
+        .post('/api/v1/auth/login')
+        .send({
           username: userAuth.email,
-          password: userAuth.password,
-        } as any)
-        .expect(201);
+          password: userAuth.auth.password,
+        })
+        .expect(201)
+        .expect(expectedResult);
     });
   });
 
