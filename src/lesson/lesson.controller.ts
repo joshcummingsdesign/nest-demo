@@ -6,33 +6,42 @@ import {
   Param,
   ParseIntPipe,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { Lesson } from './entities';
 import { LessonService } from './lesson.service';
 import { BookLessonDto } from './dto';
-import { user } from '../auth.mock';
+import { JwtAuthGuard } from '../auth/guards';
+import { ReqUser } from '../user/decorators';
+import { User } from '../user/entities';
 
 @Controller('api/v1/lessons')
 export class LessonController {
   constructor(private lessonService: LessonService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  bookLesson(@Body() lesson: BookLessonDto): Promise<Lesson> {
+  bookLesson(
+    @ReqUser() user: User,
+    @Body() lesson: BookLessonDto,
+  ): Promise<Lesson> {
     // TODO: Only a student can book a lesson
-    // TODO: user should come from auth
     return this.lessonService.create(user.id, lesson);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  getAllLessons(): Promise<Lesson[]> {
-    // TODO: user should come from auth
+  getAllLessons(@ReqUser() user: User): Promise<Lesson[]> {
     return this.lessonService.findAll(user.id, user.role);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  deleteLesson(@Param('id', ParseIntPipe) id: number): Promise<Lesson> {
+  deleteLesson(
+    @ReqUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Lesson> {
     // TODO: Only a student can cancel a lesson
-    // TODO: user should come from auth
     return this.lessonService.delete(user.id, id);
   }
 }

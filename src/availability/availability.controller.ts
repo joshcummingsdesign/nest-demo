@@ -6,30 +6,33 @@ import {
   Param,
   ParseIntPipe,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards';
+import { ReqUser } from '../user/decorators';
+import { User } from '../user/entities';
 import { Availability } from './entities';
 import { AvailabilityService } from './availability.service';
 import { AddAvailabilityDto } from './dto';
-// TODO: Delete the auth.mock file
-import { user } from '../auth.mock';
 
 @Controller('api/v1/availability')
 export class AvailabilityController {
   constructor(private availabilityService: AvailabilityService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   addAvailability(
+    @ReqUser() user: User,
     @Body() availability: AddAvailabilityDto,
   ): Promise<Availability> {
     // TODO: Only a teacher can add a time they are available
-    // TODO: user should come from auth
     return this.availabilityService.create(user.id, availability);
   }
 
-  @Get()
-  getMyAvailability(): Promise<Availability[]> {
+  @UseGuards(JwtAuthGuard)
+  @Get('self')
+  getMyAvailability(@ReqUser() user: User): Promise<Availability[]> {
     // TODO: Only a teacher can check their availability
-    // TODO: user should come from auth
     return this.availabilityService.findAll(user.id);
   }
 
@@ -42,11 +45,12 @@ export class AvailabilityController {
 
   // TODO: Add update availability route, only a teacher can update their own availability
 
-  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @Delete('self/:id')
   deleteAvailability(
+    @ReqUser() user: User,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Availability> {
-    // TODO: user should come from auth
     return this.availabilityService.delete(user.id, id);
   }
 }
