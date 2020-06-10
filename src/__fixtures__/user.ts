@@ -1,3 +1,5 @@
+import { auth } from './auth';
+
 export const user: any = {
   id: 1,
   firstName: 'Josh',
@@ -6,6 +8,8 @@ export const user: any = {
   instrument: 'Bass',
   role: 'student',
 };
+
+export const userAuth: any = { ...user, auth };
 
 export const users: any[] = [user];
 

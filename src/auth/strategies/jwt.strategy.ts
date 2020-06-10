@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: { username: string; sub: number }): Promise<User> {
-    return this.authService.validateUserFromTokenPayload({
+    return this.authService.validateJwtPayload({
       id: payload.sub,
       email: payload.username,
     });

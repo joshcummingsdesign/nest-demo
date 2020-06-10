@@ -21,7 +21,7 @@ export class AuthService {
       withAuth: true,
     });
 
-    const isValidPassword = this.cryptoService.comparePassword(
+    const isValidPassword = await this.cryptoService.comparePassword(
       payload.password,
       user.auth.password,
     );
@@ -39,7 +39,7 @@ export class AuthService {
     return { access_token: this.jwtService.sign(payload) };
   }
 
-  async validateUserFromTokenPayload(payload: {
+  async validateJwtPayload(payload: {
     id: number;
     email: string;
   }): Promise<User> {
