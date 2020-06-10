@@ -28,10 +28,12 @@ describe('UserController', () => {
 
   describe('/api/v1/users (POST)', () => {
     it('should create and return a user', async () => {
+      const expectedResult = await userService.create(createUserDto);
+
       await request(app.getHttpServer())
         .post('/api/v1/users', createUserDto)
         .expect(201)
-        .expect(userService.create(createUserDto));
+        .expect(expectedResult);
     });
 
     it('should return 409 if user exists', async () => {
@@ -47,19 +49,23 @@ describe('UserController', () => {
 
   describe('/api/v1/users (GET)', () => {
     it('should return all users', async () => {
+      const expectedResult = await userService.findAll();
+
       await request(app.getHttpServer())
         .get('/api/v1/users')
         .expect(200)
-        .expect(userService.findAll());
+        .expect(expectedResult);
     });
   });
 
   describe('/api/v1/users/:id (GET)', () => {
     it('should return a user by id', async () => {
+      const expectedResult = await userService.findOne(1);
+
       await request(app.getHttpServer())
         .get('/api/v1/users/1')
         .expect(200)
-        .expect(userService.findOne(1));
+        .expect(expectedResult);
     });
 
     it('should return 404 if user not found', async () => {
@@ -73,19 +79,23 @@ describe('UserController', () => {
 
   describe('/api/v1/users/:id (PATCH)', () => {
     it('should update and return a user', async () => {
+      const expectedResult = await userService.update(1, updateUserDto);
+
       await request(app.getHttpServer())
         .patch('/api/v1/users/1', updateUserDto)
         .expect(200)
-        .expect(userService.update(1, updateUserDto));
+        .expect(expectedResult);
     });
   });
 
   describe('/api/v1/users/:id (DELETE)', () => {
     it('should delete and return a user', async () => {
+      const expectedResult = await userService.delete(1);
+
       await request(app.getHttpServer())
         .patch('/api/v1/users/1')
         .expect(200)
-        .expect(userService.delete(1));
+        .expect(expectedResult);
     });
   });
 

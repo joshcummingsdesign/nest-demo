@@ -1,9 +1,9 @@
 import { user, users } from '../../__fixtures__';
 
 export const mockUserRepository = jest.fn().mockImplementation(() => ({
-  save: jest.fn(() => user),
-  find: jest.fn(() => users),
-  findOne: jest.fn(() => user),
-  update: jest.fn(() => user),
-  delete: jest.fn(() => user),
+  save: jest.fn(() => Promise.resolve(user)),
+  find: jest.fn(() => Promise.resolve(users)),
+  findOne: jest.fn(() => Promise.resolve(user)),
+  update: jest.fn(() => Promise.resolve(user)),
+  delete: jest.fn(() => Promise.resolve(user)),
 }));
