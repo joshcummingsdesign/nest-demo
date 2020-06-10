@@ -1,4 +1,4 @@
-import { INestApplication, NotFoundException } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { LessonService } from './lesson.service';

@@ -11,7 +11,7 @@ export class AvailabilityService {
     private availabilityRepository: Repository<Availability>,
   ) {}
 
-  createAvailability(
+  create(
     userId: number,
     availability: AddAvailabilityDto,
   ): Promise<Availability> {
@@ -19,11 +19,11 @@ export class AvailabilityService {
     return this.availabilityRepository.save({ ...availability, userId });
   }
 
-  findAllAvailability(userId: number): Promise<Availability[]> {
+  findAll(userId: number): Promise<Availability[]> {
     return this.availabilityRepository.find({ where: { userId } });
   }
 
-  async findOneAvailability(userId: number, id: number): Promise<Availability> {
+  async findOne(userId: number, id: number): Promise<Availability> {
     const availability = await this.availabilityRepository.findOne({
       where: { userId, id },
     });
@@ -33,9 +33,9 @@ export class AvailabilityService {
     return availability;
   }
 
-  async deleteAvailability(userId: number, id: number): Promise<Availability> {
+  async delete(userId: number, id: number): Promise<Availability> {
     // TODO: Check to make sure there is not a lesson at this time
-    const availability = await this.findOneAvailability(userId, id);
+    const availability = await this.findOne(userId, id);
     await this.availabilityRepository.delete(id);
     return availability;
   }

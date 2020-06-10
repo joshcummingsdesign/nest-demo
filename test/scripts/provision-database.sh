@@ -12,6 +12,10 @@ psql $PG_HOST -c "create database $DB_DATABASE"
 # Run migrations
 yarn build && yarn migration:run
 
-# Add users
+# Add student
 psql $PG_CONNECTION_STRING -c "insert into \"user\" values (1, 'Josh', 'Cummings', 'joshcummingsdesign@gmail.com', 'Bass', 'student')"
+psql $PG_CONNECTION_STRING -c "insert into auth values (1, '\$2b\$10\$3o9PNc10tKhMHuU9gcxnYeOs2Bpr9LMqefjnqiREWUkOqGLLzVL52')"
+
+# Add teacher
+psql $PG_CONNECTION_STRING -c "insert into \"user\" values (2, 'Victor', 'Wooten', 'victorwooten@gmail.com', 'Bass', 'teacher')"
 psql $PG_CONNECTION_STRING -c "insert into auth values (1, '\$2b\$10\$3o9PNc10tKhMHuU9gcxnYeOs2Bpr9LMqefjnqiREWUkOqGLLzVL52')"
