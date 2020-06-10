@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { mockUserService } from './__mocks__/user.service';
 import { MockJwtModule, getMockToken } from '../utils/test-utils';
-import { createUserDto } from '../__fixtures__';
+import { createUserDto, updateUserDto } from '../__fixtures__';
 
 describe('UserController', () => {
   let app: INestApplication;
@@ -115,6 +115,31 @@ describe('UserController', () => {
 
       await request(app.getHttpServer())
         .get('/api/v1/users/self')
+        .set('Authorization', token)
+        .expect(200)
+        .expect(expectedResult);
+    });
+  });
+
+  describe('/api/v1/users/self (PATCH)', () => {
+    it('should update and return the current user', async () => {
+      const expectedResult = await userService.update(1, updateUserDto);
+
+      await request(app.getHttpServer())
+        .patch('/api/v1/users/self')
+        .send(updateUserDto)
+        .set('Authorization', token)
+        .expect(200)
+        .expect(expectedResult);
+    });
+  });
+
+  describe('/api/v1/users/self (DELETE)', () => {
+    it('should delete and return the current user', async () => {
+      const expectedResult = await userService.delete(1);
+
+      await request(app.getHttpServer())
+        .delete('/api/v1/users/self')
         .set('Authorization', token)
         .expect(200)
         .expect(expectedResult);
