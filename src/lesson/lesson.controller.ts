@@ -20,19 +20,19 @@ export class LessonController {
   bookLesson(@Body() lesson: BookLessonDto): Promise<Lesson> {
     // TODO: Only a student can book a lesson
     // TODO: user should come from auth
-    return this.lessonService.createLesson(user.id, lesson);
+    return this.lessonService.create(user.id, lesson);
   }
 
   @Get()
   getAllLessons(): Promise<Lesson[]> {
     // TODO: user should come from auth
-    return this.lessonService.findAllLessons(user.id, user.role);
+    return this.lessonService.findAll(user.id, user.role);
   }
 
   @Delete(':id')
   deleteLesson(@Param('id', ParseIntPipe) id: number): Promise<Lesson> {
     // TODO: Only a student can cancel a lesson
     // TODO: user should come from auth
-    return this.lessonService.deleteLesson(user.id, id);
+    return this.lessonService.delete(user.id, id);
   }
 }

@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lesson } from './entities';
-import { CreateLessonDto } from './dto';
+import { BookLessonDto } from './dto';
 import { Role } from '../user/entities';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class LessonService {
     private lessonRepository: Repository<Lesson>,
   ) {}
 
-  create(userId: number, lesson: CreateLessonDto): Promise<Lesson> {
+  create(userId: number, lesson: BookLessonDto): Promise<Lesson> {
     // TODO: Make sure the teacher is available at this time
     // TODO: Update availability at this time to false
     return this.lessonRepository.save({ ...lesson, studentId: userId });

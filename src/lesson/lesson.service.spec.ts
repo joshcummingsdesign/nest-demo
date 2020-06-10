@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Lesson } from './entities';
 import { LessonService } from './lesson.service';
 import { mockLessonRepository } from './__mocks__/lesson.repository';
-import { user, lesson, lessons, createLessonDto } from '../__fixtures__';
+import { user, lesson, lessons, bookLessonDto } from '../__fixtures__';
 
 describe('LessonService', () => {
   let lessonService: LessonService;
@@ -31,11 +31,12 @@ describe('LessonService', () => {
     it('should create user', async () => {
       jest.spyOn(lessonRepository, 'save');
 
-      expect(await lessonService.create(1, createLessonDto)).toBe(lesson);
+      expect(await lessonService.create(1, bookLessonDto)).toBe(lesson);
       expect(lessonRepository.save).toHaveBeenCalledTimes(1);
     });
   });
 
+  // TODO: test students and teachers
   describe('findAll', () => {
     it('should find all lessons', async () => {
       expect(await lessonService.findAll(1, user.role)).toBe(lessons);

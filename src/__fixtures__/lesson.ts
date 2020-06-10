@@ -1,5 +1,5 @@
 import { Lesson } from '../lesson/entities';
-import { CreateLessonDto } from '../lesson/dto';
+import { BookLessonDto } from '../lesson/dto';
 
 type PartialLesson = Omit<Lesson, 'student' | 'teacher'>;
 
@@ -13,7 +13,7 @@ export const lesson: PartialLesson = {
 
 export const lessons: PartialLesson[] = [lesson];
 
-export const createLessonDto: CreateLessonDto = {
+export const bookLessonDto: BookLessonDto = {
   teacherId: 2,
   date: '2020-06-10',
   time: '09:00:00',
