@@ -8,9 +8,10 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/guards';
 import { ReqUser } from '../user/decorators';
-import { User } from '../user/entities';
+import { JwtAuthGuard, RolesGuard } from '../auth/guards';
+import { Roles } from '../auth/decorators';
+import { User, ERole } from '../user/entities';
 import { Availability } from './entities';
 import { AvailabilityService } from './availability.service';
 import { AddAvailabilityDto } from './dto';
@@ -19,20 +20,20 @@ import { AddAvailabilityDto } from './dto';
 export class AvailabilityController {
   constructor(private availabilityService: AvailabilityService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ERole.teacher)
   @Post()
   addAvailability(
     @ReqUser() user: User,
     @Body() availability: AddAvailabilityDto,
   ): Promise<Availability> {
-    // TODO: Only a teacher can add a time they are available
     return this.availabilityService.create(user.id, availability);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ERole.teacher)
   @Get('self')
   getMyAvailability(@ReqUser() user: User): Promise<Availability[]> {
-    // TODO: Only a teacher can check their availability
     return this.availabilityService.findAll(user.id);
   }
 
@@ -42,8 +43,6 @@ export class AvailabilityController {
   ): Promise<Availability[]> {
     return this.availabilityService.findAll(userId);
   }
-
-  // TODO: Add update availability route, only a teacher can update their own availability
 
   @UseGuards(JwtAuthGuard)
   @Delete('self/:id')

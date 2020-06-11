@@ -8,24 +8,25 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard, RolesGuard } from '../auth/guards';
+import { Roles } from '../auth/decorators';
+import { ReqUser } from '../user/decorators';
+import { User, ERole } from '../user/entities';
 import { Lesson } from './entities';
 import { LessonService } from './lesson.service';
 import { BookLessonDto } from './dto';
-import { JwtAuthGuard } from '../auth/guards';
-import { ReqUser } from '../user/decorators';
-import { User } from '../user/entities';
 
 @Controller('api/v1/lessons')
 export class LessonController {
   constructor(private lessonService: LessonService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ERole.student)
   @Post()
   bookLesson(
     @ReqUser() user: User,
     @Body() lesson: BookLessonDto,
   ): Promise<Lesson> {
-    // TODO: Only a student can book a lesson
     return this.lessonService.create(user.id, lesson);
   }
 
@@ -35,13 +36,13 @@ export class LessonController {
     return this.lessonService.findAll(user.id, user.role);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ERole.student)
   @Delete(':id')
   deleteLesson(
     @ReqUser() user: User,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Lesson> {
-    // TODO: Only a student can cancel a lesson
     return this.lessonService.delete(user.id, id);
   }
 }

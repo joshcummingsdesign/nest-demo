@@ -19,3 +19,10 @@ psql $PG_CONNECTION_STRING -c "insert into auth values (1, '\$2b\$10\$3o9PNc10tK
 # Add teacher
 psql $PG_CONNECTION_STRING -c "insert into \"user\" values (2, 'Victor', 'Wooten', 'victorwooten@gmail.com', 'Bass', 'teacher')"
 psql $PG_CONNECTION_STRING -c "insert into auth values (2, '\$2b\$10\$3o9PNc10tKhMHuU9gcxnYeOs2Bpr9LMqefjnqiREWUkOqGLLzVL52')"
+
+# Add availabilities
+psql $PG_CONNECTION_STRING -c "insert into availability values (1, 2, '2020-06-20', '09:00:00', false)"
+psql $PG_CONNECTION_STRING -c "insert into availability values (1, 2, '2020-06-20', '10:00:00', true)"
+
+# Add lessons
+psql $PG_CONNECTION_STRING -c "insert into lesson values (1, 1, 2, '2020-06-20', '09:00:00')"

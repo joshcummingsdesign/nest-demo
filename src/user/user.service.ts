@@ -66,6 +66,7 @@ export class UserService {
     return user;
   }
 
+  // TODO: A user can't update their role
   async update(id: number, userData: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
     await this.userRepository.update(id, userData);
