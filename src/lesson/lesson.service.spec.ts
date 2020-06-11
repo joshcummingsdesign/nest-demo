@@ -36,7 +36,6 @@ describe('LessonService', () => {
     });
   });
 
-  // TODO: test students and teachers
   describe('findAll', () => {
     it('should find all lessons', async () => {
       expect(await lessonService.findAll(1, user.role)).toBe(lessons);

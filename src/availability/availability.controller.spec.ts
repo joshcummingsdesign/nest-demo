@@ -6,7 +6,7 @@ import { MockJwtModule, getMockToken } from '../utils/test-utils';
 import { AvailabilityService } from './availability.service';
 import { AvailabilityController } from './availability.controller';
 import { mockAvailabilityService } from './__mocks__/availability.service';
-import { addAvailabilityDto } from '../__fixtures__';
+import { addAvailabilityDto, user, availability } from '../__fixtures__';
 
 describe('AvailabilityController', () => {
   let app: INestApplication;
@@ -53,7 +53,7 @@ describe('AvailabilityController', () => {
 
   describe('/api/v1/availability/self (GET)', () => {
     it("should return the user's availability", async () => {
-      const expectedResult = await availabilityService.findAll(1);
+      const expectedResult = await availabilityService.findAll(user.id);
 
       await request(app.getHttpServer())
         .get('/api/v1/availability/self')
@@ -65,7 +65,7 @@ describe('AvailabilityController', () => {
 
   describe('/api/v1/availability/user/:userId (GET)', () => {
     it('should return availability by user id', async () => {
-      const expectedResult = await availabilityService.findAll(1);
+      const expectedResult = await availabilityService.findAll(user.id);
 
       await request(app.getHttpServer())
         .get('/api/v1/availability/user/1')
@@ -76,7 +76,10 @@ describe('AvailabilityController', () => {
 
   describe('/api/v1/availability/self/:id (DELETE)', () => {
     it('should delete and return an availability', async () => {
-      const expectedResult = await availabilityService.delete(1, 1);
+      const expectedResult = await availabilityService.delete(
+        user.id,
+        availability.id,
+      );
 
       await request(app.getHttpServer())
         .delete('/api/v1/availability/self/1')

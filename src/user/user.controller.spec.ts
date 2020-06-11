@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { mockUserService } from './__mocks__/user.service';
 import { MockJwtModule, getMockToken } from '../utils/test-utils';
-import { createUserDto, updateUserDto } from '../__fixtures__';
+import { createUserDto, updateUserDto, user } from '../__fixtures__';
 
 describe('UserController', () => {
   let app: INestApplication;
@@ -92,7 +92,7 @@ describe('UserController', () => {
 
   describe('/api/v1/users/id/:userId (GET)', () => {
     it('should return a user by id', async () => {
-      const expectedResult = await userService.findOne(1);
+      const expectedResult = await userService.findOne(user.id);
 
       await request(app.getHttpServer())
         .get('/api/v1/users/id/1')
@@ -111,7 +111,7 @@ describe('UserController', () => {
 
   describe('/api/v1/users/self (GET)', () => {
     it('should return the current user', async () => {
-      const expectedResult = await userService.findOne(1);
+      const expectedResult = await userService.findOne(user.id);
 
       await request(app.getHttpServer())
         .get('/api/v1/users/self')
@@ -123,7 +123,7 @@ describe('UserController', () => {
 
   describe('/api/v1/users/self (PATCH)', () => {
     it('should update and return the current user', async () => {
-      const expectedResult = await userService.update(1, updateUserDto);
+      const expectedResult = await userService.update(user.id, updateUserDto);
 
       await request(app.getHttpServer())
         .patch('/api/v1/users/self')
@@ -136,7 +136,7 @@ describe('UserController', () => {
 
   describe('/api/v1/users/self (DELETE)', () => {
     it('should delete and return the current user', async () => {
-      const expectedResult = await userService.delete(1);
+      const expectedResult = await userService.delete(user.id);
 
       await request(app.getHttpServer())
         .delete('/api/v1/users/self')

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lesson } from './entities';
 import { BookLessonDto } from './dto';
-import { Role } from '../user/entities';
+import { Role, ERole } from '../user/entities';
 
 @Injectable()
 export class LessonService {
@@ -19,9 +19,9 @@ export class LessonService {
   }
 
   findAll(userId: number, role: Role): Promise<Lesson[]> {
-    return this.lessonRepository.find({
-      where: role === 'teacher' ? { teacherId: userId } : { studentId: userId },
-    });
+    const query =
+      role === ERole.teacher ? { teacherId: userId } : { studentId: userId };
+    return this.lessonRepository.find(query);
   }
 
   async findOne(userId: number, id: number): Promise<Lesson> {
