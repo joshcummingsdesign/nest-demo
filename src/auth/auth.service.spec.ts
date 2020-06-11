@@ -9,7 +9,7 @@ import { MockJwtModule } from '../utils/test-utils';
 import { mockAuthRepository } from './__mocks__/auth.repository';
 import { mockUserService } from '../user/__mocks__/user.service';
 import { mockCryptoService } from '../crypto/__mocks__/crypto.service';
-import { user, userAuth, createUserDto } from '../__fixtures__';
+import { student, studentAuth, createUserDto } from '../__fixtures__';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -41,15 +41,15 @@ describe('AuthService', () => {
           username: createUserDto.email,
           password: createUserDto.password,
         }),
-      ).toMatchObject(user);
+      ).toMatchObject(student);
 
-      expect(userService.findByEmail).toHaveBeenCalledWith(user.email, {
+      expect(userService.findByEmail).toHaveBeenCalledWith(student.email, {
         withAuth: true,
       });
 
       expect(cryptoService.comparePassword).toHaveBeenCalledWith(
         createUserDto.password,
-        userAuth.auth.password,
+        studentAuth.auth.password,
       );
     });
 
@@ -69,13 +69,13 @@ describe('AuthService', () => {
     it('should return an access token', () => {
       jest.spyOn(jwtService, 'sign');
 
-      expect(authService.login(userAuth)).toMatchObject({
+      expect(authService.login(studentAuth)).toMatchObject({
         access_token: expect.any(String),
       });
 
       expect(jwtService.sign).toHaveBeenCalledWith({
-        username: user.email,
-        sub: user.id,
+        username: student.email,
+        sub: student.id,
       });
     });
   });
@@ -84,12 +84,12 @@ describe('AuthService', () => {
     it('should authenticate user', async () => {
       expect(
         await authService.authenticate({
-          username: user.email,
-          sub: user.id,
+          username: student.email,
+          sub: student.id,
         }),
-      ).toBe(user);
+      ).toBe(student);
 
-      expect(userService.findOne).toHaveBeenCalledWith(user.id);
+      expect(userService.findOne).toHaveBeenCalledWith(student.id);
     });
   });
 });

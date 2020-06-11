@@ -8,7 +8,7 @@ type ParitalUser = Omit<
   'auth' | 'availability' | 'lessonsToTake' | 'lessonsToTeach'
 >;
 
-export const user: ParitalUser = {
+export const student: ParitalUser = {
   id: 1,
   firstName: 'Josh',
   lastName: 'Cummings',
@@ -16,8 +16,6 @@ export const user: ParitalUser = {
   instrument: 'Bass',
   role: 'student',
 };
-
-export const student = user;
 
 export const teacher: ParitalUser = {
   id: 2,
@@ -28,14 +26,14 @@ export const teacher: ParitalUser = {
   role: 'teacher',
 };
 
-export const userFull: Omit<User, 'auth'> = {
-  ...user,
+export const studentFull: Omit<User, 'auth'> = {
+  ...student,
   availability: [],
   lessonsToTake: [],
   lessonsToTeach: [],
 };
 
-export const userAuth: User = { ...userFull, auth: auth as Auth };
+export const studentAuth: User = { ...studentFull, auth: auth as Auth };
 
 export const users: ParitalUser[] = [student, teacher];
 

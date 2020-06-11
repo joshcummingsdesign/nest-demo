@@ -32,7 +32,7 @@ export class AvailabilityController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(ERole.teacher)
-  @Get('self')
+  @Get()
   getMyAvailability(@ReqUser() user: User): Promise<Availability[]> {
     return this.availabilityService.findAll(user.id);
   }
@@ -44,7 +44,8 @@ export class AvailabilityController {
     return this.availabilityService.findAll(userId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(ERole.teacher)
   @Delete('self/:id')
   deleteAvailability(
     @ReqUser() user: User,

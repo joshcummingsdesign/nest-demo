@@ -5,7 +5,7 @@ import { Availability } from './entities';
 import { AvailabilityService } from './availability.service';
 import { mockAvailabilityRepository } from './__mocks__/availability.repository';
 import {
-  user,
+  teacher,
   availability,
   addAvailabilityDto,
   availabilities,
@@ -37,7 +37,7 @@ describe('AvailabilityService', () => {
       jest.spyOn(availabilityRepository, 'save');
 
       expect(
-        await availabilityService.create(user.id, addAvailabilityDto),
+        await availabilityService.create(teacher.id, addAvailabilityDto),
       ).toBe(availability);
       expect(availabilityRepository.save).toHaveBeenCalledTimes(1);
     });
@@ -45,16 +45,18 @@ describe('AvailabilityService', () => {
 
   describe('findAll', () => {
     it('should find all availabilities', async () => {
-      expect(await availabilityService.findAll(user.id)).toBe(availabilities);
+      expect(await availabilityService.findAll(teacher.id)).toBe(
+        availabilities,
+      );
       expect(availabilityRepository.find).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('findOne', () => {
     it('should find an availability by id', async () => {
-      expect(await availabilityService.findOne(user.id, availability.id)).toBe(
-        availability,
-      );
+      expect(
+        await availabilityService.findOne(teacher.id, availability.id),
+      ).toBe(availability);
       expect(availabilityRepository.findOne).toHaveBeenCalledTimes(1);
     });
 
@@ -64,7 +66,7 @@ describe('AvailabilityService', () => {
         .mockResolvedValue(undefined);
 
       expect(
-        availabilityService.findOne(user.id, availability.id),
+        availabilityService.findOne(teacher.id, availability.id),
       ).rejects.toThrow('Availability not found');
     });
   });
@@ -73,9 +75,9 @@ describe('AvailabilityService', () => {
     it('should delete an availability', async () => {
       jest.spyOn(availabilityService, 'findOne');
 
-      expect(await availabilityService.delete(user.id, availability.id)).toBe(
-        availability,
-      );
+      expect(
+        await availabilityService.delete(teacher.id, availability.id),
+      ).toBe(availability);
       expect(availabilityService.findOne).toHaveBeenCalledTimes(1);
       expect(availabilityRepository.delete).toHaveBeenCalledTimes(1);
     });

@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { mockUserService } from './__mocks__/user.service';
 import { MockJwtModule, getMockToken } from '../utils/test-utils';
-import { createUserDto, updateUserDto, user } from '../__fixtures__';
+import { createUserDto, updateUserDto, student } from '../__fixtures__';
 
 describe('UserController', () => {
   let app: INestApplication;
@@ -29,7 +29,7 @@ describe('UserController', () => {
     app = module.createNestApplication();
     userService = module.get<UserService>(UserService);
     jwtService = module.get<JwtService>(JwtService);
-    token = getMockToken(jwtService);
+    token = getMockToken(jwtService, ERole.student);
 
     await app.init();
   });
@@ -92,7 +92,7 @@ describe('UserController', () => {
 
   describe('/api/v1/users/id/:userId (GET)', () => {
     it('should return a user by id', async () => {
-      const expectedResult = await userService.findOne(user.id);
+      const expectedResult = await userService.findOne(student.id);
 
       await request(app.getHttpServer())
         .get('/api/v1/users/id/1')
@@ -111,7 +111,7 @@ describe('UserController', () => {
 
   describe('/api/v1/users/self (GET)', () => {
     it('should return the current user', async () => {
-      const expectedResult = await userService.findOne(user.id);
+      const expectedResult = await userService.findOne(student.id);
 
       await request(app.getHttpServer())
         .get('/api/v1/users/self')
@@ -123,7 +123,10 @@ describe('UserController', () => {
 
   describe('/api/v1/users/self (PATCH)', () => {
     it('should update and return the current user', async () => {
-      const expectedResult = await userService.update(user.id, updateUserDto);
+      const expectedResult = await userService.update(
+        student.id,
+        updateUserDto,
+      );
 
       await request(app.getHttpServer())
         .patch('/api/v1/users/self')
@@ -136,7 +139,7 @@ describe('UserController', () => {
 
   describe('/api/v1/users/self (DELETE)', () => {
     it('should delete and return the current user', async () => {
-      const expectedResult = await userService.delete(user.id);
+      const expectedResult = await userService.delete(student.id);
 
       await request(app.getHttpServer())
         .delete('/api/v1/users/self')

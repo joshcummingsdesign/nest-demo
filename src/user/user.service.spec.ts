@@ -9,10 +9,11 @@ import { mockUserRepository } from './__mocks__/user.repository';
 import { mockAuthRepository } from '../auth/__mocks__/auth.repository';
 import { mockCryptoService } from '../crypto/__mocks__/crypto.service';
 import {
-  user,
   createUserDto,
   auth,
   users,
+  student,
+  teacher,
   teachers,
   students,
 } from '../__fixtures__';
@@ -43,7 +44,7 @@ describe('UserService', () => {
     it('should create user', async () => {
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
 
-      expect(await userService.create(createUserDto)).toBe(user);
+      expect(await userService.create(createUserDto)).toBe(student);
       expect(userRepository.findOne).toHaveBeenCalledTimes(1);
       expect(userRepository.save).toHaveBeenCalledTimes(1);
       expect(cryptoService.hashPassword).toHaveBeenCalledWith(auth.password);
@@ -80,27 +81,27 @@ describe('UserService', () => {
 
   describe('findOne', () => {
     it('should find a user by id', async () => {
-      expect(await userService.findOne(user.id)).toBe(user);
+      expect(await userService.findOne(student.id)).toBe(student);
       expect(userRepository.findOne).toHaveBeenCalledTimes(1);
     });
 
     it('should throw if user not found', () => {
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
 
-      expect(userService.findOne(user.id)).rejects.toThrow('User not found');
+      expect(userService.findOne(student.id)).rejects.toThrow('User not found');
     });
   });
 
   describe('findByEmail', () => {
     it('should find a user by email', async () => {
-      expect(await userService.findByEmail(user.email)).toBe(user);
+      expect(await userService.findByEmail(student.email)).toBe(student);
       expect(userRepository.findOne).toHaveBeenCalledTimes(1);
     });
 
     it('should throw if user not found', () => {
       jest.spyOn(userRepository, 'findOne').mockResolvedValue(undefined);
 
-      expect(userService.findByEmail(user.email)).rejects.toThrow(
+      expect(userService.findByEmail(student.email)).rejects.toThrow(
         'User not found',
       );
     });
@@ -110,7 +111,9 @@ describe('UserService', () => {
     it('should update a user', async () => {
       jest.spyOn(userService, 'findOne');
 
-      expect(await userService.update(user.id, user)).toMatchObject(user);
+      expect(await userService.update(student.id, student)).toMatchObject(
+        student,
+      );
       expect(userService.findOne).toHaveBeenCalledTimes(1);
       expect(userRepository.update).toHaveBeenCalledTimes(1);
     });
@@ -120,7 +123,7 @@ describe('UserService', () => {
     it('should delete a user', async () => {
       jest.spyOn(userService, 'findOne');
 
-      expect(await userService.delete(user.id)).toBe(user);
+      expect(await userService.delete(student.id)).toBe(student);
       expect(userService.findOne).toHaveBeenCalledTimes(1);
       expect(userRepository.delete).toHaveBeenCalledTimes(1);
     });

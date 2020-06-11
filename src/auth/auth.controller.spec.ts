@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { LocalStrategy } from './strategies';
 import { mockAuthService } from './__mocks__/auth.service';
-import { userAuth } from '../__fixtures__';
+import { studentAuth } from '../__fixtures__';
 
 describe('UserController', () => {
   let app: INestApplication;
@@ -32,13 +32,13 @@ describe('UserController', () => {
 
   describe('/api/v1/auth/login (POST)', () => {
     it('should log user in', async () => {
-      const expectedResult = authService.login(userAuth);
+      const expectedResult = authService.login(studentAuth);
 
       await request(app.getHttpServer())
         .post('/api/v1/auth/login')
         .send({
-          username: userAuth.email,
-          password: userAuth.auth.password,
+          username: studentAuth.email,
+          password: studentAuth.auth.password,
         })
         .expect(201)
         .expect(expectedResult);

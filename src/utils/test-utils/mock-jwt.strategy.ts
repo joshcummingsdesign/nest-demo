@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { User } from '../../user/entities';
-import { user } from '../../__fixtures__';
+import { student, teacher } from '../../__fixtures__';
+import { IJwtPayload } from '../../auth/interfaces';
 
 @Injectable()
 export class MockJwtStrategy extends PassportStrategy(Strategy) {
@@ -14,7 +15,9 @@ export class MockJwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(): Promise<User> {
-    return Promise.resolve(user as User);
+  validate(payload: IJwtPayload): Promise<User> {
+    return Promise.resolve(
+      payload.sub === 1 ? (student as User) : (teacher as User),
+    );
   }
 }

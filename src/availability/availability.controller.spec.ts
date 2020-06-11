@@ -3,16 +3,23 @@ import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { MockJwtModule, getMockToken } from '../utils/test-utils';
+import { ERole } from '../user/entities';
 import { AvailabilityService } from './availability.service';
 import { AvailabilityController } from './availability.controller';
 import { mockAvailabilityService } from './__mocks__/availability.service';
-import { addAvailabilityDto, user, availability } from '../__fixtures__';
+import {
+  addAvailabilityDto,
+  student,
+  teacher,
+  availability,
+} from '../__fixtures__';
 
 describe('AvailabilityController', () => {
   let app: INestApplication;
   let availabilityService: AvailabilityService;
   let jwtService: JwtService;
-  let token: string;
+  let studentToken: string;
+  let teacherToken: string;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -26,7 +33,8 @@ describe('AvailabilityController', () => {
     app = module.createNestApplication();
     availabilityService = module.get<AvailabilityService>(AvailabilityService);
     jwtService = module.get<JwtService>(JwtService);
-    token = getMockToken(jwtService);
+    studentToken = getMockToken(jwtService, ERole.student);
+    teacherToken = getMockToken(jwtService, ERole.teacher);
 
     await app.init();
   });
@@ -38,34 +46,48 @@ describe('AvailabilityController', () => {
   describe('/api/v1/availability (POST)', () => {
     it('should create and return an availability', async () => {
       const expectedResult = await availabilityService.create(
-        1,
+        teacher.id,
         addAvailabilityDto,
       );
 
       await request(app.getHttpServer())
         .post('/api/v1/availability')
         .send(addAvailabilityDto)
-        .set('Authorization', token)
+        .set('Authorization', teacherToken)
         .expect(201)
         .expect(expectedResult);
     });
+
+    it('should only allow teachers to add availability', async () => {
+      await request(app.getHttpServer())
+        .post('/api/v1/availability')
+        .set('Authorization', studentToken)
+        .expect(403);
+    });
   });
 
-  describe('/api/v1/availability/self (GET)', () => {
+  describe('/api/v1/availability (GET)', () => {
     it("should return the user's availability", async () => {
-      const expectedResult = await availabilityService.findAll(user.id);
+      const expectedResult = await availabilityService.findAll(teacher.id);
 
       await request(app.getHttpServer())
-        .get('/api/v1/availability/self')
-        .set('Authorization', token)
+        .get('/api/v1/availability')
+        .set('Authorization', teacherToken)
         .expect(200)
         .expect(expectedResult);
+    });
+
+    it('should only allow teachers to view own availability', async () => {
+      await request(app.getHttpServer())
+        .get('/api/v1/availability')
+        .set('Authorization', studentToken)
+        .expect(403);
     });
   });
 
   describe('/api/v1/availability/user/:userId (GET)', () => {
     it('should return availability by user id', async () => {
-      const expectedResult = await availabilityService.findAll(user.id);
+      const expectedResult = await availabilityService.findAll(teacher.id);
 
       await request(app.getHttpServer())
         .get('/api/v1/availability/user/1')
@@ -77,15 +99,22 @@ describe('AvailabilityController', () => {
   describe('/api/v1/availability/self/:id (DELETE)', () => {
     it('should delete and return an availability', async () => {
       const expectedResult = await availabilityService.delete(
-        user.id,
+        teacher.id,
         availability.id,
       );
 
       await request(app.getHttpServer())
         .delete('/api/v1/availability/self/1')
-        .set('Authorization', token)
+        .set('Authorization', teacherToken)
         .expect(200)
         .expect(expectedResult);
+    });
+
+    it('should only allow teachers to delete an availability', async () => {
+      await request(app.getHttpServer())
+        .delete('/api/v1/availability/self/1')
+        .set('Authorization', studentToken)
+        .expect(403);
     });
   });
 });

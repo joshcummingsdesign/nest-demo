@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Lesson } from './entities';
 import { LessonService } from './lesson.service';
 import { mockLessonRepository } from './__mocks__/lesson.repository';
-import { user, lesson, lessons, bookLessonDto } from '../__fixtures__';
+import { student, lesson, lessons, bookLessonDto } from '../__fixtures__';
 
 describe('LessonService', () => {
   let lessonService: LessonService;
@@ -38,21 +38,21 @@ describe('LessonService', () => {
 
   describe('findAll', () => {
     it('should find all lessons', async () => {
-      expect(await lessonService.findAll(1, user.role)).toBe(lessons);
+      expect(await lessonService.findAll(1, student.role)).toBe(lessons);
       expect(lessonRepository.find).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('findOne', () => {
     it('should find a lesson by id', async () => {
-      expect(await lessonService.findOne(user.id, lesson.id)).toBe(lesson);
+      expect(await lessonService.findOne(student.id, lesson.id)).toBe(lesson);
       expect(lessonRepository.findOne).toHaveBeenCalledTimes(1);
     });
 
     it('should throw if lesson not found', () => {
       jest.spyOn(lessonRepository, 'findOne').mockResolvedValue(undefined);
 
-      expect(lessonService.findOne(user.id, lesson.id)).rejects.toThrow(
+      expect(lessonService.findOne(student.id, lesson.id)).rejects.toThrow(
         'Lesson not found',
       );
     });
@@ -62,7 +62,7 @@ describe('LessonService', () => {
     it('should delete a lesson', async () => {
       jest.spyOn(lessonService, 'findOne');
 
-      expect(await lessonService.delete(user.id, lesson.id)).toBe(lesson);
+      expect(await lessonService.delete(student.id, lesson.id)).toBe(lesson);
       expect(lessonService.findOne).toHaveBeenCalledTimes(1);
       expect(lessonRepository.delete).toHaveBeenCalledTimes(1);
     });
