@@ -16,7 +16,6 @@ export class AvailabilityService {
     availability: AddAvailabilityDto,
   ): Promise<Availability> {
     // TODO: Check to make sure you are not already available at this time
-    // TODO: Sanitize
     return this.availabilityRepository.save({ ...availability, userId });
   }
 
