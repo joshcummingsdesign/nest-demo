@@ -1,12 +1,13 @@
 import { Lesson } from '../lesson/entities';
 import { BookLessonDto } from '../lesson/dto';
+import { teacher } from './user';
 
 type PartialLesson = Omit<Lesson, 'student' | 'teacher'>;
 
 export const lesson: PartialLesson = {
-  id: 1,
-  studentId: 1,
-  teacherId: 2,
+  id: 999,
+  studentId: 998,
+  teacherId: 999,
   date: '2020-06-10',
   time: '09:00:00',
 };
@@ -14,7 +15,7 @@ export const lesson: PartialLesson = {
 export const lessons: PartialLesson[] = [lesson];
 
 export const bookLessonDto: BookLessonDto = {
-  teacherId: 2,
+  teacherId: teacher.id,
   date: '2020-06-10',
   time: '09:00:00',
 };

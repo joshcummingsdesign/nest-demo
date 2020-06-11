@@ -2,6 +2,7 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,6 +21,7 @@ export class UserService {
     private cryptoService: CryptoService,
   ) {}
 
+  // TODO: Sanitize
   async create(user: CreateUserDto): Promise<User> {
     const existingUser = await this.userRepository.findOne({
       email: user.email,
@@ -66,7 +68,7 @@ export class UserService {
     return user;
   }
 
-  // TODO: A user can't update their role
+  // TODO: Sanitize
   async update(id: number, userData: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
     await this.userRepository.update(id, userData);

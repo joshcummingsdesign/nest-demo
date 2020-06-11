@@ -1,5 +1,4 @@
-import { IsString, IsOptional, IsIn } from 'class-validator';
-import { roles, Role } from '../entities';
+import { IsString, IsEmail, IsOptional } from 'class-validator';
 
 export class UpdateUserDto {
   @IsString()
@@ -10,15 +9,11 @@ export class UpdateUserDto {
   @IsOptional()
   lastName?: string;
 
-  @IsString()
+  @IsEmail()
   @IsOptional()
   email?: string;
 
   @IsString()
   @IsOptional()
   instrument?: string;
-
-  @IsIn(roles)
-  @IsOptional()
-  role?: Role;
 }

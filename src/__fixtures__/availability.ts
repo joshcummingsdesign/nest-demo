@@ -4,8 +4,8 @@ import { AddAvailabilityDto } from '../availability/dto';
 type PartialAvailability = Omit<Availability, 'user'>;
 
 export const availability: PartialAvailability = {
-  id: 1,
-  userId: 1,
+  id: 999,
+  userId: 999,
   date: '2020-06-06',
   time: '09:44:22',
   available: true,

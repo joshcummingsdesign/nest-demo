@@ -11,6 +11,7 @@ export class CreateUserDto {
   @IsString()
   email: string;
 
+  // TODO: Set min and max length as well as require special chars
   @IsString()
   password: string;
 

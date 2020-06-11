@@ -9,7 +9,7 @@ type ParitalUser = Omit<
 >;
 
 export const student: ParitalUser = {
-  id: 1,
+  id: 998,
   firstName: 'Josh',
   lastName: 'Cummings',
   email: 'joshcummingsdesign@gmail.com',
@@ -18,7 +18,7 @@ export const student: ParitalUser = {
 };
 
 export const teacher: ParitalUser = {
-  id: 2,
+  id: 999,
   firstName: 'Victor',
   lastName: 'Wooten',
   email: 'victorwooten@gmail.com',
@@ -55,5 +55,4 @@ export const updateUserDto: UpdateUserDto = {
   lastName: 'Cummings',
   email: 'joshcummingsdesign@gmail.com',
   instrument: 'Bass',
-  role: 'student',
 };

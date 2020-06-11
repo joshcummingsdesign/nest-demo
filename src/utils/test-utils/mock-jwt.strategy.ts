@@ -17,7 +17,7 @@ export class MockJwtStrategy extends PassportStrategy(Strategy) {
 
   validate(payload: IJwtPayload): Promise<User> {
     return Promise.resolve(
-      payload.sub === 1 ? (student as User) : (teacher as User),
+      payload.sub === student.id ? (student as User) : (teacher as User),
     );
   }
 }

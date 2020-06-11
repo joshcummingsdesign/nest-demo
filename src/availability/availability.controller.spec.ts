@@ -7,12 +7,7 @@ import { ERole } from '../user/entities';
 import { AvailabilityService } from './availability.service';
 import { AvailabilityController } from './availability.controller';
 import { mockAvailabilityService } from './__mocks__/availability.service';
-import {
-  addAvailabilityDto,
-  student,
-  teacher,
-  availability,
-} from '../__fixtures__';
+import { addAvailabilityDto, teacher, availability } from '../__fixtures__';
 
 describe('AvailabilityController', () => {
   let app: INestApplication;

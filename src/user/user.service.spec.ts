@@ -10,10 +10,10 @@ import { mockAuthRepository } from '../auth/__mocks__/auth.repository';
 import { mockCryptoService } from '../crypto/__mocks__/crypto.service';
 import {
   createUserDto,
+  updateUserDto,
   auth,
   users,
   student,
-  teacher,
   teachers,
   students,
 } from '../__fixtures__';
@@ -111,7 +111,7 @@ describe('UserService', () => {
     it('should update a user', async () => {
       jest.spyOn(userService, 'findOne');
 
-      expect(await userService.update(student.id, student)).toMatchObject(
+      expect(await userService.update(student.id, updateUserDto)).toMatchObject(
         student,
       );
       expect(userService.findOne).toHaveBeenCalledTimes(1);

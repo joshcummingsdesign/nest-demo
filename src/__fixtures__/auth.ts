@@ -2,7 +2,7 @@ import { ILoginPayload } from '../auth/interfaces';
 import { Auth } from '../auth/entities';
 
 export const auth: Omit<Auth, 'user'> = {
-  userId: 1,
+  userId: 998,
   password: 'Changeme!',
 };
 

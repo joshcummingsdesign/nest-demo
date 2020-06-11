@@ -15,6 +15,7 @@ export class LessonService {
   create(userId: number, lesson: BookLessonDto): Promise<Lesson> {
     // TODO: Make sure the teacher is available at this time
     // TODO: Update availability at this time to false
+    // TODO: Sanitize
     return this.lessonRepository.save({ ...lesson, studentId: userId });
   }
 
