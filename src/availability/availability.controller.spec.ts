@@ -56,7 +56,7 @@ describe('AvailabilityController', () => {
       const expectedResult = await availabilityService.findAll(1);
 
       await request(app.getHttpServer())
-        .get('/api/v1/availability')
+        .get('/api/v1/availability/self')
         .set('Authorization', token)
         .expect(200)
         .expect(expectedResult);
@@ -79,7 +79,7 @@ describe('AvailabilityController', () => {
       const expectedResult = await availabilityService.delete(1, 1);
 
       await request(app.getHttpServer())
-        .delete('/api/v1/availability/1')
+        .delete('/api/v1/availability/self/1')
         .set('Authorization', token)
         .expect(200)
         .expect(expectedResult);
