@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Instrument, InstrumentName } from './entities';
 import { Repository } from 'typeorm';
@@ -12,5 +12,13 @@ export class InstrumentService {
 
   findAll(): Promise<Instrument[]> {
     return this.instrumentRepository.find();
+  }
+
+  async findByName(name: InstrumentName): Promise<Instrument> {
+    const instrument = await this.instrumentRepository.findOne({ name });
+    if (!instrument) {
+      throw new NotFoundException('Instrument not found');
+    }
+    return instrument;
   }
 }

@@ -20,11 +20,11 @@ psql $PG_CONNECTION_STRING -c "insert into instrument values (999, 'drums')"
 
 # Add student
 psql $PG_CONNECTION_STRING -c "insert into \"user\" values (998, 'Josh', 'Cummings', 'joshcummingsdesign@gmail.com', 998, 996)"
-psql $PG_CONNECTION_STRING -c "insert into auth values (998, '\$2b\$10\$3o9PNc10tKhMHuU9gcxnYeOs2Bpr9LMqefjnqiREWUkOqGLLzVL52')"
+psql $PG_CONNECTION_STRING -c "insert into auth values (998, '\$2b\$10\$cXgg5wDCGmVq6JMLNO4/pOm0V5NMKJW2RDoktJba4FFkpa.oxrHHe')"
 
 # Add teacher
 psql $PG_CONNECTION_STRING -c "insert into \"user\" values (999, 'Kurt', 'Rosenwinkel', 'kurtrosenwinkel@gmail.com', 999, 996)"
-psql $PG_CONNECTION_STRING -c "insert into auth values (999, '\$2b\$10\$3o9PNc10tKhMHuU9gcxnYeOs2Bpr9LMqefjnqiREWUkOqGLLzVL52')"
+psql $PG_CONNECTION_STRING -c "insert into auth values (999, '\$2b\$10\$cXgg5wDCGmVq6JMLNO4/pOm0V5NMKJW2RDoktJba4FFkpa.oxrHHe')"
 
 # Add availabilities
 psql $PG_CONNECTION_STRING -c "insert into availability values (998, 999, '2020-06-20T16:00:00Z', false)"

@@ -10,6 +10,8 @@ import { Auth } from '../auth/entities';
 import { RoleName } from '../role/entities';
 import { CryptoService } from '../crypto/crypto.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
+import { InstrumentService } from '../instrument/instrument.service';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 export class UserService {
@@ -19,9 +21,13 @@ export class UserService {
     @InjectRepository(Auth)
     private authRepository: Repository<Auth>,
     private cryptoService: CryptoService,
+    private instrumentService: InstrumentService,
+    private roleService: RoleService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    const { password, role, instrument, ...userData } = createUserDto;
+
     const existingUser = await this.userRepository.findOne({
       email: createUserDto.email,
     });
@@ -30,16 +36,19 @@ export class UserService {
       throw new ConflictException('User email already exists');
     }
 
-    const { password, role, instrument, ...userData } = createUserDto;
+    const foundRole = await this.roleService.findByName(createUserDto.role);
+    const foundInstrument = await this.instrumentService.findByName(
+      createUserDto.instrument,
+    );
 
-    // TODO: Fix deletion of instrument issue
-    const data = {
+    const mergedUser = new User({
       ...userData,
-      role: { name: role },
-      instrument: { name: instrument },
-    };
+      role: foundRole,
+      instrument: foundInstrument,
+    });
 
-    const createdUser = await this.userRepository.save(data);
+    const createdUser = await this.userRepository.save(mergedUser);
+
     const hashedPassword = await this.cryptoService.hashPassword(password);
 
     await this.authRepository.save({
@@ -78,18 +87,16 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
 
-    const { instrument, ...userData } = updateUserDto;
+    let instrument = user.instrument;
+    if (updateUserDto.instrument) {
+      instrument = await this.instrumentService.findByName(
+        updateUserDto.instrument,
+      );
+    }
 
-    const data = {
-      ...userData,
-      instrument: {
-        name: instrument,
-      },
-    };
+    const mergedUser = new User({ ...user, ...updateUserDto, instrument });
 
-    await this.userRepository.update(id, data);
-
-    return Object.assign({}, user, data);
+    return await this.userRepository.save(mergedUser);
   }
 
   async delete(id: number): Promise<User> {

@@ -59,4 +59,8 @@ export class User {
 
   @OneToMany(() => Lesson, (lesson) => lesson.teacherId)
   lessonsToTeach: Lesson[];
+
+  constructor(partial: Partial<User>) {
+    Object.assign(this, partial);
+  }
 }

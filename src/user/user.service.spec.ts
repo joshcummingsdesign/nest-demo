@@ -6,9 +6,13 @@ import { ERole } from '../role/entities';
 import { Auth } from '../auth/entities';
 import { UserService } from './user.service';
 import { CryptoService } from '../crypto/crypto.service';
+import { InstrumentService } from '../instrument/instrument.service';
+import { RoleService } from '../role/role.service';
 import { mockUserRepository } from './__mocks__/user.repository';
 import { mockAuthRepository } from '../auth/__mocks__/auth.repository';
 import { mockCryptoService } from '../crypto/__mocks__/crypto.service';
+import { mockInstrumentService } from '../instrument/__mocks__/instrument.service';
+import { mockRoleService } from '../role/__mocks__/role.service';
 import {
   createUserDto,
   updateUserDto,
@@ -24,6 +28,8 @@ describe('UserService', () => {
   let userRepository: Repository<User>;
   let authRepository: Repository<Auth>;
   let cryptoService: CryptoService;
+  let instrumentService: InstrumentService;
+  let roleService: RoleService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,6 +38,8 @@ describe('UserService', () => {
         { provide: getRepositoryToken(User), useFactory: mockUserRepository },
         { provide: getRepositoryToken(Auth), useFactory: mockAuthRepository },
         { provide: CryptoService, useFactory: mockCryptoService },
+        { provide: InstrumentService, useFactory: mockInstrumentService },
+        { provide: RoleService, useFactory: mockRoleService },
       ],
     }).compile();
 
@@ -39,6 +47,8 @@ describe('UserService', () => {
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
     authRepository = module.get<Repository<Auth>>(getRepositoryToken(Auth));
     cryptoService = module.get<CryptoService>(CryptoService);
+    instrumentService = module.get<InstrumentService>(InstrumentService);
+    roleService = module.get<RoleService>(RoleService);
   });
 
   describe('create', () => {
@@ -50,6 +60,8 @@ describe('UserService', () => {
       expect(userRepository.save).toHaveBeenCalledTimes(1);
       expect(cryptoService.hashPassword).toHaveBeenCalledWith(auth.password);
       expect(authRepository.save).toHaveBeenCalledTimes(1);
+      expect(instrumentService.findByName).toHaveBeenCalledTimes(1);
+      expect(roleService.findByName).toHaveBeenCalledTimes(1);
     });
 
     it('should throw if user exists', () => {
@@ -116,7 +128,8 @@ describe('UserService', () => {
         student,
       );
       expect(userService.findOne).toHaveBeenCalledTimes(1);
-      expect(userRepository.update).toHaveBeenCalledTimes(1);
+      expect(userRepository.save).toHaveBeenCalledTimes(1);
+      expect(instrumentService.findByName).toHaveBeenCalledTimes(1);
     });
   });
 

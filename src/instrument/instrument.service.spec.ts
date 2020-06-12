@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Instrument } from './entities';
 import { InstrumentService } from './instrument.service';
 import { mockInstrumentRepository } from './__mocks__/instrument.repository';
-import { instruments } from '../__fixtures__';
+import { instruments, instrument } from '../__fixtures__';
 
 describe('InstrumenService', () => {
   let instrumentService: InstrumentService;
@@ -31,6 +31,23 @@ describe('InstrumenService', () => {
     it('should find all instruments', async () => {
       expect(await instrumentService.findAll()).toBe(instruments);
       expect(instrumentRepository.find).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('findByName', () => {
+    it('should find instrument by name', async () => {
+      expect(await instrumentService.findByName(instrument.name)).toBe(
+        instrument,
+      );
+      expect(instrumentRepository.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw if instrument not found', async () => {
+      jest.spyOn(instrumentRepository, 'findOne').mockResolvedValue(undefined);
+
+      expect(instrumentService.findByName(instrument.name)).rejects.toThrow(
+        'Instrument not found',
+      );
     });
   });
 });
