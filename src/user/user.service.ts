@@ -32,6 +32,7 @@ export class UserService {
 
     const { password, role, instrument, ...userData } = createUserDto;
 
+    // TODO: Fix deletion of instrument issue
     const data = {
       ...userData,
       role: { name: role },

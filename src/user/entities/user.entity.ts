@@ -5,7 +5,9 @@ import {
   OneToMany,
   OneToOne,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Transform, Exclude } from 'class-transformer';
 import { Lesson } from '../../lesson/entities';
 import { Availability } from '../../availability/entities';
 import { Auth } from '../../auth/entities';
@@ -17,7 +19,6 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // TODO: Test columns with length
   @Column({ length: 35 })
   firstName: string;
 
@@ -27,12 +28,24 @@ export class User {
   @Column()
   email: string;
 
+  @Column()
+  @Exclude()
+  roleId: number;
+
   @ManyToOne(() => Role, (role) => role.users, { eager: true })
+  @JoinColumn({ name: 'roleId' })
+  @Transform((role) => role.name)
   role: Role;
+
+  @Column()
+  @Exclude()
+  instrumentId: number;
 
   @ManyToOne(() => Instrument, (instrument) => instrument.users, {
     eager: true,
   })
+  @JoinColumn({ name: 'instrumentId' })
+  @Transform((instrument) => instrument.name)
   instrument: Instrument;
 
   @OneToOne(() => Auth, (auth) => auth.user)

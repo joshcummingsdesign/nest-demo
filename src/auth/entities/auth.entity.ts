@@ -5,11 +5,10 @@ import { User } from '../../user/entities';
 export class Auth {
   @PrimaryColumn()
   userId: number;
+  @OneToOne(() => User, (user) => user.auth, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
+  user: User;
 
   @Column({ length: 64 })
   password: string;
-
-  @OneToOne(() => User, (user) => user.auth, { onDelete: 'CASCADE' })
-  @JoinColumn()
-  user: User;
 }

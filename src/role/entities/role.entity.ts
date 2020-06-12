@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, OneToMany } from 'typeorm';
+import { Entity, OneToMany, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { getEnumKeys } from '../../utils/types-utils';
 import { User } from '../../user/entities';
 
@@ -11,7 +11,10 @@ export type RoleName = keyof typeof ERole;
 
 @Entity()
 export class Role {
-  @PrimaryColumn({ length: 7 })
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ length: 7 })
   name: RoleName;
 
   @OneToMany(() => User, (user) => user.role)
