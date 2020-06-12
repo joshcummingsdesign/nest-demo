@@ -6,10 +6,10 @@ export class Auth {
   @PrimaryColumn()
   userId: number;
 
-  @Column()
+  @Column({ length: 64 })
   password: string;
 
   @OneToOne(() => User, (user) => user.auth, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn()
   user: User;
 }

@@ -8,14 +8,12 @@ export const lesson: PartialLesson = {
   id: 999,
   studentId: 998,
   teacherId: 999,
-  date: '2020-06-10',
-  time: '09:00:00',
+  datetime: '2020-06-11T10:00:00Z',
 };
 
 export const lessons: PartialLesson[] = [lesson];
 
 export const bookLessonDto: BookLessonDto = {
   teacherId: teacher.id,
-  date: '2020-06-10',
-  time: '09:00:00',
+  datetime: '2020-06-11T10:00:00Z',
 };

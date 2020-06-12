@@ -5,9 +5,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { EConfigOptions } from '../config';
 import { Auth } from './entities';
 import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
 import { LocalStrategy, JwtStrategy } from './strategies';
 import { UserModule } from '../user/user.module';
-import { AuthController } from './auth.controller';
 import { CryptoModule } from '../crypto/crypto.module';
 
 @Module({

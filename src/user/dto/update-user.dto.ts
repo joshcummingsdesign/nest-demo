@@ -1,11 +1,14 @@
-import { IsString, IsEmail, IsOptional } from 'class-validator';
+import { IsEmail, IsOptional, IsAlpha, Length, IsIn } from 'class-validator';
+import { instruments, InstrumentName } from '../../instrument/entities';
 
 export class UpdateUserDto {
-  @IsString()
+  @IsAlpha()
+  @Length(1, 35)
   @IsOptional()
   firstName?: string;
 
-  @IsString()
+  @IsAlpha()
+  @Length(1, 35)
   @IsOptional()
   lastName?: string;
 
@@ -13,7 +16,7 @@ export class UpdateUserDto {
   @IsOptional()
   email?: string;
 
-  @IsString()
+  @IsIn(instruments)
   @IsOptional()
-  instrument?: string;
+  instrument?: InstrumentName;
 }

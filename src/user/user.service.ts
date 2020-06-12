@@ -2,12 +2,12 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
-  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User, ERole, Role } from './entities';
+import { User } from './entities';
 import { Auth } from '../auth/entities';
+import { RoleName } from '../role/entities';
 import { CryptoService } from '../crypto/crypto.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 
@@ -21,17 +21,24 @@ export class UserService {
     private cryptoService: CryptoService,
   ) {}
 
-  async create(user: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const existingUser = await this.userRepository.findOne({
-      email: user.email,
+      email: createUserDto.email,
     });
 
     if (existingUser) {
       throw new ConflictException('User email already exists');
     }
 
-    const { password, ...userData } = user;
-    const createdUser = await this.userRepository.save(userData);
+    const { password, role, instrument, ...userData } = createUserDto;
+
+    const data = {
+      ...userData,
+      role: { name: role },
+      instrument: { name: instrument },
+    };
+
+    const createdUser = await this.userRepository.save(data);
     const hashedPassword = await this.cryptoService.hashPassword(password);
 
     await this.authRepository.save({
@@ -42,8 +49,8 @@ export class UserService {
     return createdUser;
   }
 
-  findAll(role?: Role): Promise<User[]> {
-    const query = role ? { role } : undefined;
+  findAll(role?: RoleName): Promise<User[]> {
+    const query = role ? { role: { name: role } } : undefined;
     return this.userRepository.find(query);
   }
 
@@ -67,10 +74,21 @@ export class UserService {
     return user;
   }
 
-  async update(id: number, userData: UpdateUserDto): Promise<User> {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOne(id);
-    await this.userRepository.update(id, userData);
-    return Object.assign({}, user, userData);
+
+    const { instrument, ...userData } = updateUserDto;
+
+    const data = {
+      ...userData,
+      instrument: {
+        name: instrument,
+      },
+    };
+
+    await this.userRepository.update(id, data);
+
+    return Object.assign({}, user, data);
   }
 
   async delete(id: number): Promise<User> {

@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User, ERole } from './entities';
+import { User } from './entities';
+import { ERole } from '../role/entities';
 import { Auth } from '../auth/entities';
 import { UserService } from './user.service';
 import { CryptoService } from '../crypto/crypto.service';

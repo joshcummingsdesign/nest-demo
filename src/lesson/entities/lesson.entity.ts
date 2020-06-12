@@ -18,11 +18,8 @@ export class Lesson {
   @Column()
   teacherId: number;
 
-  @Column()
-  date: string;
-
-  @Column()
-  time: string;
+  @Column({ type: 'timestamp' })
+  datetime: string;
 
   @ManyToOne(() => User, (user) => user.lessonsToTake, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'studentId' })

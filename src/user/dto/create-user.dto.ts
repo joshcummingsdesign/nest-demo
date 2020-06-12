@@ -1,23 +1,26 @@
-import { IsString, IsIn } from 'class-validator';
-import { roles, Role } from '../entities';
+import { IsAlpha, Length, IsEmail, Matches, IsIn } from 'class-validator';
+import { PASSWORD_REGEX } from '../../utils/regex-utils';
+import { roles, RoleName } from '../../role/entities';
+import { instruments, InstrumentName } from '../../instrument/entities';
 
 export class CreateUserDto {
-  @IsString()
+  @IsAlpha()
+  @Length(1, 35)
   firstName: string;
 
-  @IsString()
+  @IsAlpha()
+  @Length(1, 35)
   lastName: string;
 
-  @IsString()
+  @IsEmail()
   email: string;
 
-  // TODO: Set min and max length as well as require special chars
-  @IsString()
+  @Matches(PASSWORD_REGEX, { message: 'Invalid password' })
   password: string;
 
-  @IsString()
-  instrument: string;
+  @IsIn(instruments)
+  instrument: InstrumentName;
 
   @IsIn(roles)
-  role: Role;
+  role: RoleName;
 }

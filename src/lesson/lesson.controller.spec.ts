@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { MockJwtModule, getMockToken } from '../utils/test-utils';
-import { ERole } from '../user/entities';
+import { ERole } from '../role/entities';
 import { LessonService } from './lesson.service';
 import { LessonController } from './lesson.controller';
 import { mockLessonService } from './__mocks__/lesson.service';
@@ -63,7 +63,7 @@ describe('LessonController', () => {
     it('should return all lessons', async () => {
       const expectedResult = await lessonService.findAll(
         student.id,
-        student.role,
+        student.role.name,
       );
 
       await request(app.getHttpServer())

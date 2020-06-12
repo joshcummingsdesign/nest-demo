@@ -15,16 +15,13 @@ export class Availability {
   @Column()
   userId: number;
 
-  @Column()
-  date: string;
-
-  @Column()
-  time: string;
+  @Column({ type: 'timestamp' })
+  datetime: string;
 
   @Column({ default: true })
   available: boolean;
 
   @ManyToOne(() => User, (user) => user.availability, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn()
   user: User;
 }

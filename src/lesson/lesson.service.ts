@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lesson } from './entities';
 import { BookLessonDto } from './dto';
-import { Role, ERole } from '../user/entities';
+import { RoleName, ERole } from '../role/entities';
 
 @Injectable()
 export class LessonService {
@@ -18,7 +18,7 @@ export class LessonService {
     return this.lessonRepository.save({ ...lesson, studentId: userId });
   }
 
-  findAll(userId: number, role: Role): Promise<Lesson[]> {
+  findAll(userId: number, role: RoleName): Promise<Lesson[]> {
     const query =
       role === ERole.teacher ? { teacherId: userId } : { studentId: userId };
     return this.lessonRepository.find(query);

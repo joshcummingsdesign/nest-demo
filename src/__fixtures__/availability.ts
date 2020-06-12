@@ -6,14 +6,12 @@ type PartialAvailability = Omit<Availability, 'user'>;
 export const availability: PartialAvailability = {
   id: 999,
   userId: 999,
-  date: '2020-06-06',
-  time: '09:44:22',
+  datetime: '2020-06-11T10:00:00Z',
   available: true,
 };
 
 export const availabilities: PartialAvailability[] = [availability];
 
 export const addAvailabilityDto: AddAvailabilityDto = {
-  date: '2020-06-06',
-  time: '09:44:22',
+  datetime: '2020-06-11T10:00:00Z',
 };

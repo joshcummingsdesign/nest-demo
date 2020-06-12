@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { MockJwtModule, getMockToken } from '../utils/test-utils';
-import { ERole } from '../user/entities';
+import { ERole } from '../role/entities';
 import { AvailabilityService } from './availability.service';
 import { AvailabilityController } from './availability.controller';
 import { mockAvailabilityService } from './__mocks__/availability.service';

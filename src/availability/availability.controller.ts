@@ -8,19 +8,21 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
+import { User } from '../user/entities';
 import { ReqUser } from '../user/decorators';
-import { JwtAuthGuard, RolesGuard } from '../auth/guards';
-import { Roles } from '../auth/decorators';
-import { User, ERole } from '../user/entities';
+import { JwtAuthGuard } from '../auth/guards';
+import { RoleGuard } from '../role/guards';
+import { Roles } from '../role/decorators';
+import { ERole } from '../role/entities';
 import { Availability } from './entities';
-import { AvailabilityService } from './availability.service';
 import { AddAvailabilityDto } from './dto';
+import { AvailabilityService } from './availability.service';
 
 @Controller('api/v1/availability')
 export class AvailabilityController {
   constructor(private availabilityService: AvailabilityService) {}
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(ERole.teacher)
   @Post()
   addAvailability(
@@ -30,13 +32,15 @@ export class AvailabilityController {
     return this.availabilityService.create(user.id, availability);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  // TODO: Time series query
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(ERole.teacher)
   @Get()
   getMyAvailability(@ReqUser() user: User): Promise<Availability[]> {
     return this.availabilityService.findAll(user.id);
   }
 
+  // TODO: Time series query
   @Get('user/:userId')
   getUserAvailability(
     @Param('userId', ParseIntPipe) userId: number,
@@ -44,7 +48,7 @@ export class AvailabilityController {
     return this.availabilityService.findAll(userId);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(ERole.teacher)
   @Delete('self/:id')
   deleteAvailability(

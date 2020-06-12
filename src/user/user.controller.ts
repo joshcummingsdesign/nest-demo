@@ -12,7 +12,8 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards';
 import { ReqUser } from './decorators';
-import { User, Role } from './entities';
+import { User } from './entities';
+import { RoleName } from '../role/entities';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 
@@ -26,7 +27,7 @@ export class UserController {
   }
 
   @Get()
-  getAllUsers(@Query('role') role: Role): Promise<User[]> {
+  getAllUsers(@Query('role') role: RoleName): Promise<User[]> {
     return this.userService.findAll(role);
   }
 

@@ -2,31 +2,28 @@ import { User } from '../user/entities';
 import { Auth } from '../auth/entities';
 import { CreateUserDto, UpdateUserDto } from '../user/dto';
 import { auth } from './auth';
+import { studentRole, teacherRole } from './role';
+import { instrument } from './instrument';
 
-type ParitalUser = Omit<
-  User,
-  'auth' | 'availability' | 'lessonsToTake' | 'lessonsToTeach'
->;
-
-export const student: ParitalUser = {
+export const student: User = {
   id: 998,
   firstName: 'Josh',
   lastName: 'Cummings',
   email: 'joshcummingsdesign@gmail.com',
-  instrument: 'Bass',
-  role: 'student',
-};
+  role: studentRole,
+  instrument,
+} as User;
 
-export const teacher: ParitalUser = {
+export const teacher: User = {
   id: 999,
   firstName: 'Victor',
   lastName: 'Wooten',
   email: 'victorwooten@gmail.com',
-  instrument: 'Bass',
-  role: 'teacher',
-};
+  role: teacherRole,
+  instrument,
+} as User;
 
-export const studentFull: Omit<User, 'auth'> = {
+export const studentFull: User = {
   ...student,
   availability: [],
   lessonsToTake: [],
@@ -35,18 +32,18 @@ export const studentFull: Omit<User, 'auth'> = {
 
 export const studentAuth: User = { ...studentFull, auth: auth as Auth };
 
-export const users: ParitalUser[] = [student, teacher];
+export const users: User[] = [student, teacher];
 
-export const students: ParitalUser[] = [student];
+export const students: User[] = [student];
 
-export const teachers: ParitalUser[] = [teacher];
+export const teachers: User[] = [teacher];
 
 export const createUserDto: CreateUserDto = {
   firstName: 'Josh',
   lastName: 'Cummings',
   email: 'joshcummingsdesign@gmail.com',
   password: 'Changeme!',
-  instrument: 'Bass',
+  instrument: 'guitar',
   role: 'student',
 };
 
@@ -54,5 +51,5 @@ export const updateUserDto: UpdateUserDto = {
   firstName: 'Josh',
   lastName: 'Cummings',
   email: 'joshcummingsdesign@gmail.com',
-  instrument: 'Bass',
+  instrument: 'guitar',
 };
