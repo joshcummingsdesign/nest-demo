@@ -21,7 +21,7 @@ export class LessonService {
   findAll(userId: number, role: RoleName): Promise<Lesson[]> {
     const query =
       role === ERole.teacher ? { teacherId: userId } : { studentId: userId };
-    return this.lessonRepository.find(query);
+    return this.lessonRepository.find({ ...query, order: { datetime: 'ASC' } });
   }
 
   async findOne(userId: number, id: number): Promise<Lesson> {

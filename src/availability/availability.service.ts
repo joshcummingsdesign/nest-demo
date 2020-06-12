@@ -20,7 +20,10 @@ export class AvailabilityService {
   }
 
   findAll(userId: number): Promise<Availability[]> {
-    return this.availabilityRepository.find({ where: { userId } });
+    return this.availabilityRepository.find({
+      where: { userId },
+      order: { datetime: 'ASC' },
+    });
   }
 
   async findOne(userId: number, id: number): Promise<Availability> {
