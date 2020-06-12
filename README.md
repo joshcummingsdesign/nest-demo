@@ -26,9 +26,9 @@ A demo application built with [NestJS](https://nestjs.com/).
 
         docker-compose -f docker/docker-compose.yaml up
 
-5.  Run the database migrations
+5.  Run the database provisioning script
 
-        yarn build && yarn migration:run
+        ./test/scripts/provision-database.sh
 
 6.  Start the local development server
 
