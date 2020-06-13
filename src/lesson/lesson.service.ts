@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Lesson } from './entities';
 import { BookLessonDto } from './dto';
 import { RoleName, ERole } from '../role/entities';
+import { AvailabilityService } from '../availability/availability.service';
 
 @Injectable()
 export class LessonService {
@@ -12,10 +17,18 @@ export class LessonService {
     private lessonRepository: Repository<Lesson>,
   ) {}
 
-  create(userId: number, lesson: BookLessonDto): Promise<Lesson> {
+  async create(userId: number, bookLessonDto: BookLessonDto): Promise<Lesson> {
     // TODO: Make sure the teacher is available at this time
     // TODO: Update availability at this time to false
-    return this.lessonRepository.save({ ...lesson, studentId: userId });
+    const existingLesson = await this.lessonRepository.findOne({
+      datetime: bookLessonDto.datetime,
+    });
+
+    if (existingLesson) {
+      throw new ConflictException('A lesson at the given time already exists');
+    }
+
+    return this.lessonRepository.save({ ...bookLessonDto, studentId: userId });
   }
 
   findAll(userId: number, role: RoleName): Promise<Lesson[]> {

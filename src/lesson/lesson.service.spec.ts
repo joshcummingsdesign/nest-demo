@@ -28,17 +28,25 @@ describe('LessonService', () => {
   });
 
   describe('create', () => {
-    it('should create user', async () => {
+    it('should create a lesson', async () => {
+      jest.spyOn(lessonRepository, 'findOne').mockResolvedValue(undefined);
       jest.spyOn(lessonRepository, 'save');
 
       expect(await lessonService.create(1, bookLessonDto)).toBe(lesson);
+      expect(lessonRepository.findOne).toHaveBeenCalledTimes(1);
       expect(lessonRepository.save).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw if lesson exists', async () => {
+      expect(lessonService.create(1, bookLessonDto)).rejects.toThrow(
+        'A lesson at the given time already exists',
+      );
     });
   });
 
   describe('findAll', () => {
     it('should find all lessons', async () => {
-      expect(await lessonService.findAll(1, student.role)).toBe(lessons);
+      expect(await lessonService.findAll(1, student.role.name)).toBe(lessons);
       expect(lessonRepository.find).toHaveBeenCalledTimes(1);
     });
   });
