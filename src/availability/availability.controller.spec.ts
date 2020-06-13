@@ -38,7 +38,7 @@ describe('AvailabilityController', () => {
     await app.close();
   });
 
-  describe('/api/v1/availability (POST)', () => {
+  describe('POST /api/v1/availability', () => {
     it('should create and return an availability', async () => {
       const expectedResult = await availabilityService.create(
         teacher.id,
@@ -61,12 +61,12 @@ describe('AvailabilityController', () => {
     });
   });
 
-  describe('/api/v1/availability (GET)', () => {
+  describe('GET /api/v1/availability/self', () => {
     it("should return the user's availability", async () => {
       const expectedResult = await availabilityService.findAll(teacher.id);
 
       await request(app.getHttpServer())
-        .get('/api/v1/availability')
+        .get('/api/v1/availability/self')
         .set('Authorization', teacherToken)
         .expect(200)
         .expect(expectedResult);
@@ -74,13 +74,13 @@ describe('AvailabilityController', () => {
 
     it('should only allow teachers to view own availability', async () => {
       await request(app.getHttpServer())
-        .get('/api/v1/availability')
+        .get('/api/v1/availability/self')
         .set('Authorization', studentToken)
         .expect(403);
     });
   });
 
-  describe('/api/v1/availability/user/:userId (GET)', () => {
+  describe('GET /api/v1/availability/user/:userId', () => {
     it('should return availability by user id', async () => {
       const expectedResult = await availabilityService.findAll(teacher.id);
 
@@ -91,7 +91,7 @@ describe('AvailabilityController', () => {
     });
   });
 
-  describe('/api/v1/availability/self/:id (DELETE)', () => {
+  describe('DELETE /api/v1/availability/self/:id', () => {
     it('should delete and return an availability', async () => {
       const expectedResult = await availabilityService.delete(
         teacher.id,

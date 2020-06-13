@@ -27,7 +27,7 @@ describe('InstrumentController', () => {
     await app.close();
   });
 
-  describe('/api/v1/instruments (GET)', () => {
+  describe('GET /api/v1/instruments', () => {
     it('should return all instruments', async () => {
       const expectedResult = await instrumentService.findAll();
 

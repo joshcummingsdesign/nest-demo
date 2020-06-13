@@ -1,9 +1,9 @@
-import { IsNumber, IsISO8601 } from 'class-validator';
+import { IsNumber, IsDateString } from 'class-validator';
 
 export class BookLessonDto {
   @IsNumber()
   teacherId: number;
 
-  @IsISO8601()
+  @IsDateString()
   datetime: string;
 }

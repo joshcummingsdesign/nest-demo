@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserModule (e2e) GET /api/v1/users 1`] = `
+Array [
+  Object {
+    "email": "joshcummingsdesign@gmail.com",
+    "firstName": "Josh",
+    "id": 998,
+    "instrument": Object {
+      "id": 996,
+      "name": "guitar",
+    },
+    "instrumentId": 996,
+    "lastName": "Cummings",
+    "role": Object {
+      "id": 998,
+      "name": "student",
+    },
+    "roleId": 998,
+  },
+  Object {
+    "email": "kurtrosenwinkel@gmail.com",
+    "firstName": "Kurt",
+    "id": 999,
+    "instrument": Object {
+      "id": 996,
+      "name": "guitar",
+    },
+    "instrumentId": 996,
+    "lastName": "Rosenwinkel",
+    "role": Object {
+      "id": 999,
+      "name": "teacher",
+    },
+    "roleId": 999,
+  },
+]
+`;

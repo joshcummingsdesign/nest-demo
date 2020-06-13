@@ -32,18 +32,18 @@ export class AvailabilityController {
     return this.availabilityService.create(user.id, availability);
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Roles(ERole.teacher)
-  @Get()
-  getMyAvailability(@ReqUser() user: User): Promise<Availability[]> {
-    return this.availabilityService.findAll(user.id);
-  }
-
   @Get('user/:userId')
   getUserAvailability(
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<Availability[]> {
     return this.availabilityService.findAll(userId);
+  }
+
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Roles(ERole.teacher)
+  @Get('self')
+  getMyAvailability(@ReqUser() user: User): Promise<Availability[]> {
+    return this.availabilityService.findAll(user.id);
   }
 
   @UseGuards(JwtAuthGuard, RoleGuard)

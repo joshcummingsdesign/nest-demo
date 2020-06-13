@@ -30,7 +30,7 @@ describe('UserController', () => {
     await app.close();
   });
 
-  describe('/api/v1/auth/login (POST)', () => {
+  describe('POST /api/v1/auth/login', () => {
     it('should log user in', async () => {
       const expectedResult = authService.login(studentAuth);
 

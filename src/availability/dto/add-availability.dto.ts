@@ -1,6 +1,6 @@
-import { IsISO8601 } from 'class-validator';
+import { IsDateString } from 'class-validator';
 
 export class AddAvailabilityDto {
-  @IsISO8601()
+  @IsDateString()
   datetime: string;
 }

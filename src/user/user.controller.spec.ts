@@ -38,7 +38,7 @@ describe('UserController', () => {
     await app.close();
   });
 
-  describe('/api/v1/users (POST)', () => {
+  describe('POST /api/v1/users', () => {
     it('should create and return a user', async () => {
       const expectedResult = await userService.create(createUserDto);
 
@@ -61,7 +61,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('/api/v1/users (GET)', () => {
+  describe('GET /api/v1/users', () => {
     it('should return all users', async () => {
       const expectedResult = await userService.findAll();
 
@@ -90,7 +90,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('/api/v1/users/id/:userId (GET)', () => {
+  describe('GET /api/v1/users/id/:userId', () => {
     it('should return a user by id', async () => {
       const expectedResult = await userService.findOne(student.id);
 
@@ -109,7 +109,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('/api/v1/users/self (GET)', () => {
+  describe('GET /api/v1/users/self', () => {
     it('should return the current user', async () => {
       const expectedResult = await userService.findOne(student.id);
 
@@ -121,7 +121,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('/api/v1/users/self (PATCH)', () => {
+  describe('PATCH /api/v1/users/self', () => {
     it('should update and return the current user', async () => {
       const expectedResult = await userService.update(
         student.id,
@@ -137,7 +137,7 @@ describe('UserController', () => {
     });
   });
 
-  describe('/api/v1/users/self (DELETE)', () => {
+  describe('DELETE /api/v1/users/self', () => {
     it('should delete and return the current user', async () => {
       const expectedResult = await userService.delete(student.id);
 

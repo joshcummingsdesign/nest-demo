@@ -1,6 +1,6 @@
-# Nest Demo
+# BookLesson (REST)
 
-A demo application built with [NestJS](https://nestjs.com/).
+A demo music lesson booking REST API built with [NestJS](https://nestjs.com/).
 
 ## Requirements
 
@@ -13,9 +13,9 @@ A demo application built with [NestJS](https://nestjs.com/).
 
         yarn
 
-2.  Copy `.env.sample` to `.env`
+2.  Copy `.env.example` to `.env` and make sure to export the variables to your environment
 
-        cp .env.sample .env
+        cp .env.example .env
 
 3. Export the test keys
 

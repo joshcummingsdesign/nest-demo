@@ -33,14 +33,14 @@ export class LessonController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get()
-  getAllLessons(@ReqUser() user: User): Promise<Lesson[]> {
+  @Get('self')
+  getMyLessons(@ReqUser() user: User): Promise<Lesson[]> {
     return this.lessonService.findAll(user.id, user.role.name);
   }
 
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(ERole.student)
-  @Delete(':id')
+  @Delete('self/:id')
   deleteLesson(
     @ReqUser() user: User,
     @Param('id', ParseIntPipe) id: number,

@@ -36,7 +36,7 @@ describe('LessonController', () => {
     await app.close();
   });
 
-  describe('/api/v1/lessons (POST)', () => {
+  describe('POST /api/v1/lessons', () => {
     it('should create and return a lesson', async () => {
       const expectedResult = await lessonService.create(
         student.id,
@@ -59,27 +59,27 @@ describe('LessonController', () => {
     });
   });
 
-  describe('/api/v1/lessons (GET)', () => {
-    it('should return all lessons', async () => {
+  describe('GET /api/v1/lessons/self', () => {
+    it("should return current user's lessons", async () => {
       const expectedResult = await lessonService.findAll(
         student.id,
         student.role.name,
       );
 
       await request(app.getHttpServer())
-        .get('/api/v1/lessons')
+        .get('/api/v1/lessons/self')
         .set('Authorization', studentToken)
         .expect(200)
         .expect(expectedResult);
     });
   });
 
-  describe('/api/v1/lessons/:id (DELETE)', () => {
+  describe('DELETE /api/v1/lessons/self/:id', () => {
     it('should delete and return a lesson', async () => {
       const expectedResult = await lessonService.delete(student.id, lesson.id);
 
       await request(app.getHttpServer())
-        .delete('/api/v1/lessons/1')
+        .delete('/api/v1/lessons/self/1')
         .set('Authorization', studentToken)
         .expect(200)
         .expect(expectedResult);
@@ -87,7 +87,7 @@ describe('LessonController', () => {
 
     it('should only allow students to cancel a lesson', async () => {
       await request(app.getHttpServer())
-        .delete('/api/v1/lessons/1')
+        .delete('/api/v1/lessons/self/1')
         .set('Authorization', teacherToken)
         .expect(403);
     });

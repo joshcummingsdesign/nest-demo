@@ -17,11 +17,12 @@ describe('UserModule (e2e)', () => {
     app.init();
   });
 
-  it('/api/v1/users (GET)', async () => {
-    await request(app.getHttpServer())
+  it('GET /api/v1/users', async () => {
+    const res = await request(app.getHttpServer())
       .get('/api/v1/users')
-      .expect(200)
-      .expect(users);
+      .expect(200);
+
+    expect(res.body).toMatchSnapshot();
   });
 
   afterAll(async () => {
