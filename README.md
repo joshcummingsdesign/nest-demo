@@ -1,4 +1,4 @@
-# BookLesson (REST)
+# BookLesson API (REST)
 
 A demo music lesson booking REST API built with [NestJS](https://nestjs.com/).
 
