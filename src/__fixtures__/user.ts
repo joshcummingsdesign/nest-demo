@@ -50,6 +50,5 @@ export const createUserDto: CreateUserDto = {
 export const updateUserDto: UpdateUserDto = {
   firstName: 'Josh',
   lastName: 'Cummings',
-  email: 'joshcummingsdesign@gmail.com',
   instrument: 'guitar',
 };

@@ -32,7 +32,6 @@ export class LessonController {
     return this.lessonService.create(user.id, lesson);
   }
 
-  // TODO: Time series query
   @UseGuards(JwtAuthGuard)
   @Get()
   getAllLessons(@ReqUser() user: User): Promise<Lesson[]> {

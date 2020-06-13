@@ -14,6 +14,4 @@ export class AuthController {
   login(@ReqUser() user: User): ILoginPayload {
     return this.authService.login(user);
   }
-
-  // TODO: Add password update route
 }

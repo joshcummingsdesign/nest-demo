@@ -32,7 +32,6 @@ export class AvailabilityController {
     return this.availabilityService.create(user.id, availability);
   }
 
-  // TODO: Time series query
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Roles(ERole.teacher)
   @Get()
@@ -40,7 +39,6 @@ export class AvailabilityController {
     return this.availabilityService.findAll(user.id);
   }
 
-  // TODO: Time series query
   @Get('user/:userId')
   getUserAvailability(
     @Param('userId', ParseIntPipe) userId: number,
