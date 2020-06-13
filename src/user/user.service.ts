@@ -2,24 +2,26 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities';
-import { Auth } from '../auth/entities';
 import { RoleName } from '../role/entities';
 import { CryptoService } from '../crypto/crypto.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { InstrumentService } from '../instrument/instrument.service';
 import { RoleService } from '../role/role.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @InjectRepository(Auth)
-    private authRepository: Repository<Auth>,
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService,
     private cryptoService: CryptoService,
     private instrumentService: InstrumentService,
     private roleService: RoleService,
@@ -51,10 +53,7 @@ export class UserService {
 
     const hashedPassword = await this.cryptoService.hashPassword(password);
 
-    await this.authRepository.save({
-      userId: createdUser.id,
-      password: hashedPassword,
-    });
+    await this.authService.create(createdUser.id, hashedPassword);
 
     return createdUser;
   }

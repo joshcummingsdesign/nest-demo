@@ -7,11 +7,11 @@ import { Repository } from 'typeorm';
 export class RoleService {
   constructor(
     @InjectRepository(Role)
-    private instrumentRepository: Repository<Role>,
+    private roleRepository: Repository<Role>,
   ) {}
 
   async findByName(name: RoleName): Promise<Role> {
-    const role = await this.instrumentRepository.findOne({ name });
+    const role = await this.roleRepository.findOne({ name });
     if (!role) {
       throw new NotFoundException('Role not found');
     }

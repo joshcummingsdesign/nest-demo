@@ -29,6 +29,6 @@ import { CryptoModule } from '../crypto/crypto.module';
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [TypeOrmModule],
+  exports: [AuthService],
 })
 export class AuthModule {}

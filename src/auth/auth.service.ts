@@ -1,17 +1,32 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  forwardRef,
+  Inject,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { User } from '../user/entities';
 import { ILocalPayload, ILoginPayload, IJwtPayload } from './interfaces';
 import { CryptoService } from '../crypto/crypto.service';
+import { Repository } from 'typeorm';
+import { Auth } from './entities';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(Auth)
+    private authRepository: Repository<Auth>,
+    @Inject(forwardRef(() => UserService))
     private userService: UserService,
     private jwtService: JwtService,
     private cryptoService: CryptoService,
   ) {}
+
+  async create(userId: number, hashedPassword: string): Promise<void> {
+    await this.authRepository.save({ userId, password: hashedPassword });
+  }
 
   async validateUser(payload: ILocalPayload): Promise<User> {
     const email = payload.username;

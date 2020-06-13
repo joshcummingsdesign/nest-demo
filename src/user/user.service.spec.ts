@@ -3,13 +3,11 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities';
 import { ERole } from '../role/entities';
-import { Auth } from '../auth/entities';
 import { UserService } from './user.service';
 import { CryptoService } from '../crypto/crypto.service';
 import { InstrumentService } from '../instrument/instrument.service';
 import { RoleService } from '../role/role.service';
 import { mockUserRepository } from './__mocks__/user.repository';
-import { mockAuthRepository } from '../auth/__mocks__/auth.repository';
 import { mockCryptoService } from '../crypto/__mocks__/crypto.service';
 import { mockInstrumentService } from '../instrument/__mocks__/instrument.service';
 import { mockRoleService } from '../role/__mocks__/role.service';
@@ -22,11 +20,13 @@ import {
   teachers,
   students,
 } from '../__fixtures__';
+import { AuthService } from '../auth/auth.service';
+import { mockAuthService } from '../auth/__mocks__/auth.service';
 
 describe('UserService', () => {
-  let userService: UserService;
   let userRepository: Repository<User>;
-  let authRepository: Repository<Auth>;
+  let userService: UserService;
+  let authService: AuthService;
   let cryptoService: CryptoService;
   let instrumentService: InstrumentService;
   let roleService: RoleService;
@@ -36,16 +36,16 @@ describe('UserService', () => {
       providers: [
         UserService,
         { provide: getRepositoryToken(User), useFactory: mockUserRepository },
-        { provide: getRepositoryToken(Auth), useFactory: mockAuthRepository },
+        { provide: AuthService, useFactory: mockAuthService },
         { provide: CryptoService, useFactory: mockCryptoService },
         { provide: InstrumentService, useFactory: mockInstrumentService },
         { provide: RoleService, useFactory: mockRoleService },
       ],
     }).compile();
 
-    userService = module.get<UserService>(UserService);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
-    authRepository = module.get<Repository<Auth>>(getRepositoryToken(Auth));
+    userService = module.get<UserService>(UserService);
+    authService = module.get<AuthService>(AuthService);
     cryptoService = module.get<CryptoService>(CryptoService);
     instrumentService = module.get<InstrumentService>(InstrumentService);
     roleService = module.get<RoleService>(RoleService);
@@ -59,7 +59,7 @@ describe('UserService', () => {
       expect(userRepository.findOne).toHaveBeenCalledTimes(1);
       expect(userRepository.save).toHaveBeenCalledTimes(1);
       expect(cryptoService.hashPassword).toHaveBeenCalledWith(auth.password);
-      expect(authRepository.save).toHaveBeenCalledTimes(1);
+      expect(authService.create).toHaveBeenCalledTimes(1);
       expect(instrumentService.findByName).toHaveBeenCalledTimes(1);
       expect(roleService.findByName).toHaveBeenCalledTimes(1);
     });
