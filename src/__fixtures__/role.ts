@@ -1,11 +1,11 @@
 import { Role } from '../role/entities';
 
-export const studentRole: Role = {
+export const studentRole: Partial<Role> = {
   id: 998,
   name: 'student',
-} as Role;
+};
 
-export const teacherRole: Role = {
+export const teacherRole: Partial<Role> = {
   id: 999,
   name: 'teacher',
-} as Role;
+};

@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  Module,
+  ValidationPipe,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { validationSchema } from './config';
@@ -21,6 +26,18 @@ import { AvailabilityModule } from './availability/availability.module';
     UserModule,
     LessonModule,
     AvailabilityModule,
+  ],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useFactory: () =>
+        new ValidationPipe({
+          whitelist: true,
+          forbidNonWhitelisted: true,
+          forbidUnknownValues: true,
+        }),
+    },
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
   ],
 })
 export class AppModule {}

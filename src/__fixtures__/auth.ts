@@ -1,9 +1,9 @@
 import { ILoginPayload } from '../auth/interfaces';
 import { Auth } from '../auth/entities';
 
-export const auth: Omit<Auth, 'user'> = {
+export const auth: Partial<Auth> = {
   userId: 998,
-  password: 'Changeme!',
+  password: 'Changeme1!',
 };
 
 export const loginPayload: ILoginPayload = {

@@ -6,33 +6,17 @@ Array [
     "email": "joshcummingsdesign@gmail.com",
     "firstName": "Josh",
     "id": 998,
-    "instrument": Object {
-      "id": 996,
-      "name": "guitar",
-    },
-    "instrumentId": 996,
+    "instrument": "guitar",
     "lastName": "Cummings",
-    "role": Object {
-      "id": 998,
-      "name": "student",
-    },
-    "roleId": 998,
+    "role": "student",
   },
   Object {
     "email": "kurtrosenwinkel@gmail.com",
     "firstName": "Kurt",
     "id": 999,
-    "instrument": Object {
-      "id": 996,
-      "name": "guitar",
-    },
-    "instrumentId": 996,
+    "instrument": "guitar",
     "lastName": "Rosenwinkel",
-    "role": Object {
-      "id": 999,
-      "name": "teacher",
-    },
-    "roleId": 999,
+    "role": "teacher",
   },
 ]
 `;
