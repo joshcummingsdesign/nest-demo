@@ -31,7 +31,7 @@ describe('RoleService', () => {
       expect(roleRepository.findOne).toHaveBeenCalledTimes(1);
     });
 
-    it('should throw if role not found', async () => {
+    it('should throw if role not found', () => {
       jest.spyOn(roleRepository, 'findOne').mockResolvedValue(undefined);
       expect(roleService.findByName(studentRole.name)).rejects.toThrow(
         'Role not found',

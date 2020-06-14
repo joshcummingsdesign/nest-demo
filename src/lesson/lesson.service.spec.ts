@@ -37,7 +37,7 @@ describe('LessonService', () => {
       expect(lessonRepository.save).toHaveBeenCalledTimes(1);
     });
 
-    it('should throw if lesson exists', async () => {
+    it('should throw if lesson exists', () => {
       expect(lessonService.create(1, bookLessonDto)).rejects.toThrow(
         'A lesson at the given time already exists',
       );

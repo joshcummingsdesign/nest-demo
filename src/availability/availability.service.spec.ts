@@ -14,6 +14,7 @@ import {
 describe('AvailabilityService', () => {
   let availabilityService: AvailabilityService;
   let availabilityRepository: Repository<Availability>;
+  let realDateNow: () => number;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,14 +33,47 @@ describe('AvailabilityService', () => {
     );
   });
 
+  beforeAll(() => {
+    realDateNow = Date.now.bind(global.Date);
+    const dateNowStub = jest.fn(() => 1592164576240);
+    global.Date.now = dateNowStub;
+  });
+
+  afterAll(() => {
+    global.Date.now = realDateNow;
+  });
+
   describe('create', () => {
     it('should create an availability', async () => {
+      jest
+        .spyOn(availabilityRepository, 'findOne')
+        .mockResolvedValue(undefined);
+
       jest.spyOn(availabilityRepository, 'save');
 
       expect(
         await availabilityService.create(teacher.id, addAvailabilityDto),
       ).toBe(availability);
+      expect(availabilityRepository.findOne).toHaveBeenCalledTimes(1);
       expect(availabilityRepository.save).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not allow duplicate availabilities', () => {
+      expect(
+        availabilityService.create(teacher.id, addAvailabilityDto),
+      ).rejects.toThrow('Availability at this time already exists');
+    });
+
+    it('should not allow availability in the past', () => {
+      jest
+        .spyOn(availabilityRepository, 'findOne')
+        .mockResolvedValue(undefined);
+
+      expect(
+        availabilityService.create(teacher.id, {
+          datetime: '2019-06-11T10:00:00Z',
+        }),
+      ).rejects.toThrow('Availability must be a time in the future');
     });
   });
 

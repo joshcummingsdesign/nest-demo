@@ -42,7 +42,7 @@ describe('InstrumenService', () => {
       expect(instrumentRepository.findOne).toHaveBeenCalledTimes(1);
     });
 
-    it('should throw if instrument not found', async () => {
+    it('should throw if instrument not found', () => {
       jest.spyOn(instrumentRepository, 'findOne').mockResolvedValue(undefined);
 
       expect(instrumentService.findByName(instrument.name)).rejects.toThrow(

@@ -24,5 +24,5 @@ export const availabilities: Partial<Availability>[] = [
 ];
 
 export const addAvailabilityDto: AddAvailabilityDto = {
-  datetime: '2020-06-11T10:00:00Z',
+  datetime: '2020-06-20T00:00:00Z',
 };

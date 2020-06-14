@@ -1,6 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { parseISO, isBefore } from 'date-fns';
 import { Availability } from './entities';
 import { AddAvailabilityDto } from './dto';
 
@@ -11,12 +16,25 @@ export class AvailabilityService {
     private availabilityRepository: Repository<Availability>,
   ) {}
 
-  create(
+  async create(
     userId: number,
-    availability: AddAvailabilityDto,
+    addAvailabilityDto: AddAvailabilityDto,
   ): Promise<Availability> {
-    // TODO: Check to make sure you are not already available at this time
-    return this.availabilityRepository.save({ ...availability, userId });
+    const datetime = parseISO(addAvailabilityDto.datetime);
+
+    const existingAvailability = await this.availabilityRepository.findOne({
+      where: { userId, datetime },
+    });
+
+    if (existingAvailability) {
+      throw new ConflictException('Availability at this time already exists');
+    }
+
+    if (isBefore(datetime, Date.now())) {
+      throw new ConflictException('Availability must be a time in the future');
+    }
+
+    return this.availabilityRepository.save({ ...addAvailabilityDto, userId });
   }
 
   findAll(userId: number): Promise<Availability[]> {
