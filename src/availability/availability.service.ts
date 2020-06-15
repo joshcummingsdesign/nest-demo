@@ -8,12 +8,15 @@ import { Repository } from 'typeorm';
 import { parseISO, isBefore } from 'date-fns';
 import { Availability } from './entities';
 import { AddAvailabilityDto } from './dto';
+import { LessonService } from '../lesson/lesson.service';
+import { Lesson } from '../lesson/entities';
 
 @Injectable()
 export class AvailabilityService {
   constructor(
     @InjectRepository(Availability)
     private availabilityRepository: Repository<Availability>,
+    private lessonService: LessonService,
   ) {}
 
   async create(
@@ -55,9 +58,19 @@ export class AvailabilityService {
   }
 
   async delete(userId: number, id: number): Promise<Availability> {
-    // TODO: Check to make sure there is not a lesson at this time
     const availability = await this.findOne(userId, id);
+
+    const existingLesson = await this.lessonService.findByDatetime(
+      userId,
+      availability.datetime,
+    );
+
+    if (existingLesson) {
+      throw new ConflictException('There is a lesson at this time');
+    }
+
     await this.availabilityRepository.delete(id);
+
     return availability;
   }
 }

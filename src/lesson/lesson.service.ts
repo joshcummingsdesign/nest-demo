@@ -8,7 +8,6 @@ import { Repository } from 'typeorm';
 import { Lesson } from './entities';
 import { BookLessonDto } from './dto';
 import { RoleName, ERole } from '../role/entities';
-import { AvailabilityService } from '../availability/availability.service';
 
 @Injectable()
 export class LessonService {
@@ -48,6 +47,15 @@ export class LessonService {
       throw new NotFoundException('Lesson not found');
     }
     return lesson;
+  }
+
+  async findByDatetime(userId: number, datetime: string): Promise<Lesson> {
+    return this.lessonRepository.findOne({
+      where: [
+        { studentId: userId, datetime },
+        { teacherId: userId, datetime },
+      ],
+    });
   }
 
   async delete(userId: number, id: number): Promise<Lesson> {

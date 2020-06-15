@@ -10,10 +10,13 @@ import {
   addAvailabilityDto,
   availabilities,
 } from '../__fixtures__';
+import { LessonService } from '../lesson/lesson.service';
+import { mockLessonService } from '../lesson/__mocks__/lesson.service';
 
 describe('AvailabilityService', () => {
   let availabilityService: AvailabilityService;
   let availabilityRepository: Repository<Availability>;
+  let lessonService: LessonService;
   let realDateNow: () => number;
 
   beforeEach(async () => {
@@ -24,6 +27,10 @@ describe('AvailabilityService', () => {
           provide: getRepositoryToken(Availability),
           useFactory: mockAvailabilityRepository,
         },
+        {
+          provide: LessonService,
+          useFactory: mockLessonService,
+        },
       ],
     }).compile();
 
@@ -31,6 +38,7 @@ describe('AvailabilityService', () => {
     availabilityRepository = module.get<Repository<Availability>>(
       getRepositoryToken(Availability),
     );
+    lessonService = module.get<LessonService>(LessonService);
   });
 
   beforeAll(() => {
@@ -109,11 +117,20 @@ describe('AvailabilityService', () => {
     it('should delete an availability', async () => {
       jest.spyOn(availabilityService, 'findOne');
 
+      jest.spyOn(lessonService, 'findByDatetime').mockResolvedValue(undefined);
+
       expect(
         await availabilityService.delete(teacher.id, availability.id),
       ).toBe(availability);
       expect(availabilityService.findOne).toHaveBeenCalledTimes(1);
       expect(availabilityRepository.delete).toHaveBeenCalledTimes(1);
+      expect(lessonService.findByDatetime).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw if there is a lesson at that time', () => {
+      expect(
+        availabilityService.delete(teacher.id, availability.id),
+      ).rejects.toThrow('There is a lesson at this time');
     });
   });
 });

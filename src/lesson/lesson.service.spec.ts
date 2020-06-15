@@ -66,6 +66,15 @@ describe('LessonService', () => {
     });
   });
 
+  describe('findByDatetime', () => {
+    it('should find a lesson by datetime', async () => {
+      expect(
+        await lessonService.findByDatetime(student.id, lesson.datetime),
+      ).toBe(lesson);
+      expect(lessonRepository.findOne).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('delete', () => {
     it('should delete a lesson', async () => {
       jest.spyOn(lessonService, 'findOne');
