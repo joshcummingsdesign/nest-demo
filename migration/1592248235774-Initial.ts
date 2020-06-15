@@ -1,11 +1,11 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class Initial1592191470178 implements MigrationInterface {
-    name = 'Initial1592191470178'
+export class Initial1592248235774 implements MigrationInterface {
+    name = 'Initial1592248235774'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE "lesson" ("id" SERIAL NOT NULL, "studentId" integer NOT NULL, "teacherId" integer NOT NULL, "datetime" character varying NOT NULL, CONSTRAINT "PK_0ef25918f0237e68696dee455bd" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "availability" ("id" SERIAL NOT NULL, "userId" integer NOT NULL, "datetime" character varying NOT NULL, "available" boolean NOT NULL DEFAULT true, CONSTRAINT "PK_05a8158cf1112294b1c86e7f1d3" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "lesson" ("id" SERIAL NOT NULL, "studentId" integer NOT NULL, "teacherId" integer NOT NULL, "datetime" character varying(25) NOT NULL, CONSTRAINT "PK_0ef25918f0237e68696dee455bd" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "availability" ("id" SERIAL NOT NULL, "userId" integer NOT NULL, "datetime" character varying(25) NOT NULL, "available" boolean NOT NULL DEFAULT true, CONSTRAINT "PK_05a8158cf1112294b1c86e7f1d3" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "role" ("id" SERIAL NOT NULL, "name" character varying(7) NOT NULL, CONSTRAINT "PK_b36bcfe02fc8de3c57a8b2391c2" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "instrument" ("id" SERIAL NOT NULL, "name" character varying(20) NOT NULL, CONSTRAINT "PK_1707dc7e7c2845211b38bef3d29" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "user" ("id" SERIAL NOT NULL, "firstName" character varying(35) NOT NULL, "lastName" character varying(35) NOT NULL, "email" character varying NOT NULL, "roleId" integer NOT NULL, "instrumentId" integer NOT NULL, CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`);

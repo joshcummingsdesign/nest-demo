@@ -90,25 +90,6 @@ describe('UserController', () => {
     });
   });
 
-  describe('GET /api/v1/users/id/:userId', () => {
-    it('should return a user by id', async () => {
-      const expectedResult = await userService.findOne(student.id);
-
-      await request(app.getHttpServer())
-        .get('/api/v1/users/id/1')
-        .expect(200)
-        .expect(expectedResult);
-    });
-
-    it('should return 404 if user not found', async () => {
-      jest.spyOn(userService, 'findOne').mockImplementation(() => {
-        throw new NotFoundException();
-      });
-
-      await request(app.getHttpServer()).get('/api/v1/users/id/1').expect(404);
-    });
-  });
-
   describe('GET /api/v1/users/self', () => {
     it('should return the current user', async () => {
       const expectedResult = await userService.findOne(student.id);

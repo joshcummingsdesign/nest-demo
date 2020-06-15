@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Teacher (e2e) should create, read, delete availability 1`] = `
+Object {
+  "available": true,
+  "datetime": "2020-06-20T11:00:00-07:00",
+  "id": 1,
+  "userId": 999,
+}
+`;
+
+exports[`Teacher (e2e) should create, read, delete availability 2`] = `
+Array [
+  Object {
+    "available": false,
+    "datetime": "2020-06-20T09:00:00-07:00",
+    "id": 998,
+    "userId": 999,
+  },
+  Object {
+    "available": true,
+    "datetime": "2020-06-20T10:00:00-07:00",
+    "id": 999,
+    "userId": 999,
+  },
+  Object {
+    "available": true,
+    "datetime": "2020-06-20T11:00:00-07:00",
+    "id": 1,
+    "userId": 999,
+  },
+]
+`;
+
+exports[`Teacher (e2e) should create, read, delete availability 3`] = `
+Object {
+  "available": true,
+  "datetime": "2020-06-20T11:00:00-07:00",
+  "id": 1,
+  "userId": 999,
+}
+`;
+
+exports[`Teacher (e2e) should view all lessons 1`] = `
+Array [
+  Object {
+    "datetime": "2020-06-20T09:00:00-07:00",
+    "id": 999,
+    "studentId": 998,
+    "teacherId": 999,
+  },
+]
+`;

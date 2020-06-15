@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Account (e2e) should create, read, update, delete 1`] = `
+Object {
+  "email": "victorwooten@gmail.com",
+  "firstName": "Victor",
+  "id": 1,
+  "instrument": "bass",
+  "lastName": "Wooten",
+  "role": "teacher",
+}
+`;
+
+exports[`Account (e2e) should create, read, update, delete 2`] = `
+Object {
+  "email": "victorwooten@gmail.com",
+  "firstName": "Victor",
+  "id": 1,
+  "instrument": "bass",
+  "lastName": "Wooten",
+  "role": "teacher",
+}
+`;
+
+exports[`Account (e2e) should create, read, update, delete 3`] = `
+Object {
+  "email": "victorwooten@gmail.com",
+  "firstName": "Victor",
+  "id": 1,
+  "instrument": "bass",
+  "lastName": "Wooten",
+  "role": "teacher",
+}
+`;
+
+exports[`Account (e2e) should create, read, update, delete 4`] = `
+Object {
+  "email": "victorwooten@gmail.com",
+  "firstName": "Victor",
+  "id": 1,
+  "instrument": "bass",
+  "lastName": "Wooten",
+  "role": "teacher",
+}
+`;
+
+exports[`Account (e2e) should view all instruments 1`] = `
+Array [
+  Object {
+    "id": 996,
+    "name": "guitar",
+  },
+  Object {
+    "id": 997,
+    "name": "piano",
+  },
+  Object {
+    "id": 998,
+    "name": "bass",
+  },
+  Object {
+    "id": 999,
+    "name": "drums",
+  },
+]
+`;

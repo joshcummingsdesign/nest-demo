@@ -30,6 +30,11 @@ export const teacher: Partial<User> = {
 
 export const studentAuth = { ...student, auth } as User;
 
+export const teacherAuth = {
+  ...teacher,
+  auth: { ...auth, userId: teacher.id },
+} as User;
+
 export const users: Partial<User>[] = [student, teacher];
 
 export const students: Partial<User>[] = [student];
@@ -49,4 +54,19 @@ export const updateUserDto: UpdateUserDto = {
   firstName: 'Josh',
   lastName: 'Cummings',
   instrument: 'guitar',
+};
+
+export const createNewUser: CreateUserDto = {
+  firstName: 'Victor',
+  lastName: 'Wooten',
+  email: 'victorwooten@gmail.com',
+  password: 'Changeme1!',
+  instrument: 'bass',
+  role: 'teacher',
+};
+
+export const updateNewUser: UpdateUserDto = {
+  firstName: 'Victor',
+  lastName: 'Wooten',
+  instrument: 'bass',
 };

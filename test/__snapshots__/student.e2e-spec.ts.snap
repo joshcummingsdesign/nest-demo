@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Student (e2e) should create, read, delete lesson 1`] = `
+Object {
+  "datetime": "2020-06-20T10:00:00-07:00",
+  "id": 1,
+  "studentId": 998,
+  "teacherId": 999,
+}
+`;
+
+exports[`Student (e2e) should create, read, delete lesson 2`] = `
+Array [
+  Object {
+    "datetime": "2020-06-20T09:00:00-07:00",
+    "id": 999,
+    "studentId": 998,
+    "teacherId": 999,
+  },
+  Object {
+    "datetime": "2020-06-20T10:00:00-07:00",
+    "id": 1,
+    "studentId": 998,
+    "teacherId": 999,
+  },
+]
+`;
+
+exports[`Student (e2e) should create, read, delete lesson 3`] = `
+Object {
+  "datetime": "2020-06-20T10:00:00-07:00",
+  "id": 1,
+  "studentId": 998,
+  "teacherId": 999,
+}
+`;
+
+exports[`Student (e2e) should view all teachers 1`] = `
+Array [
+  Object {
+    "email": "kurtrosenwinkel@gmail.com",
+    "firstName": "Kurt",
+    "id": 999,
+    "instrument": "guitar",
+    "lastName": "Rosenwinkel",
+    "role": "teacher",
+  },
+]
+`;
+
+exports[`Student (e2e) should view teacher availability 1`] = `
+Array [
+  Object {
+    "available": false,
+    "datetime": "2020-06-20T09:00:00-07:00",
+    "id": 998,
+    "userId": 999,
+  },
+  Object {
+    "available": true,
+    "datetime": "2020-06-20T10:00:00-07:00",
+    "id": 999,
+    "userId": 999,
+  },
+]
+`;

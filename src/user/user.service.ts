@@ -6,7 +6,7 @@ import {
   forwardRef,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, FindManyOptions } from 'typeorm';
 import { User } from './entities';
 import { RoleName } from '../role/entities';
 import { CryptoService } from '../crypto/crypto.service';
@@ -58,8 +58,14 @@ export class UserService {
     return createdUser;
   }
 
-  findAll(role?: RoleName): Promise<User[]> {
-    const query = role ? { role: { name: role } } : undefined;
+  async findAll(role?: RoleName): Promise<User[]> {
+    let query: FindManyOptions<User>;
+
+    if (role) {
+      const roleId = await this.roleService.findByName(role);
+      query = { where: { roleId } };
+    }
+
     return this.userRepository.find(query);
   }
 

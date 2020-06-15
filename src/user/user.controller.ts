@@ -31,11 +31,6 @@ export class UserController {
     return this.userService.findAll(role);
   }
 
-  @Get('id/:userId')
-  getUser(@Param('userId', ParseIntPipe) userId: number): Promise<User> {
-    return this.userService.findOne(userId);
-  }
-
   @UseGuards(JwtAuthGuard)
   @Get('self')
   getSelf(@ReqUser() user: User): Promise<User> {
