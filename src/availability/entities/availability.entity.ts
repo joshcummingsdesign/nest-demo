@@ -18,7 +18,7 @@ export class Availability {
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @Column({ type: 'timestamp' })
+  @Column({ length: 25 })
   datetime: string;
 
   @Column({ default: true })

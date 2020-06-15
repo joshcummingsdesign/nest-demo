@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { parseISO, isBefore } from 'date-fns';
+import { parseISO, isBefore, formatISO } from 'date-fns';
 import { Lesson } from './entities';
 import { BookLessonDto } from './dto';
 import { RoleName, ERole } from '../role/entities';
@@ -20,14 +20,14 @@ export class LessonService {
   ) {}
 
   async create(userId: number, bookLessonDto: BookLessonDto): Promise<Lesson> {
-    const datetime = parseISO(bookLessonDto.datetime);
+    const datetime = formatISO(parseISO(bookLessonDto.datetime));
 
-    if (isBefore(datetime, Date.now())) {
+    if (isBefore(parseISO(datetime), Date.now())) {
       throw new ConflictException('Lesson must be a time in the future');
     }
 
     const existingLesson = await this.lessonRepository.findOne({
-      where: { studentId: userId, datetime: parseISO(bookLessonDto.datetime) },
+      where: { studentId: userId, datetime },
     });
 
     if (existingLesson) {
@@ -36,7 +36,7 @@ export class LessonService {
 
     const teacherAvailability = await this.availabilityService.findByDatetime(
       bookLessonDto.teacherId,
-      bookLessonDto.datetime,
+      datetime,
     );
 
     if (!teacherAvailability || !teacherAvailability.available) {
@@ -45,11 +45,15 @@ export class LessonService {
 
     await this.availabilityService.update(
       bookLessonDto.teacherId,
-      bookLessonDto.datetime,
+      datetime,
       false,
     );
 
-    return this.lessonRepository.save({ ...bookLessonDto, studentId: userId });
+    return this.lessonRepository.save({
+      ...bookLessonDto,
+      studentId: userId,
+      datetime,
+    });
   }
 
   findAll(userId: number, role: RoleName): Promise<Lesson[]> {

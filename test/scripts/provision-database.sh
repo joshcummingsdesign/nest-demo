@@ -27,8 +27,8 @@ psql $PG_CONNECTION_STRING -c "insert into \"user\" values (999, 'Kurt', 'Rosenw
 psql $PG_CONNECTION_STRING -c "insert into auth values (999, '\$2b\$10\$cXgg5wDCGmVq6JMLNO4/pOm0V5NMKJW2RDoktJba4FFkpa.oxrHHe')"
 
 # Add availabilities
-psql $PG_CONNECTION_STRING -c "insert into availability values (998, 999, '2020-06-20T16:00:00Z', false)"
-psql $PG_CONNECTION_STRING -c "insert into availability values (999, 999, '2020-06-20T17:00:00Z', true)"
+psql $PG_CONNECTION_STRING -c "insert into availability values (998, 999, '2020-06-20T09:00:00-07:00', false)"
+psql $PG_CONNECTION_STRING -c "insert into availability values (999, 999, '2020-06-20T10:00:00-07:00', true)"
 
 # Add lessons
-psql $PG_CONNECTION_STRING -c "insert into lesson values (999, 998, 999, '2020-06-20T16:00:00Z')"
+psql $PG_CONNECTION_STRING -c "insert into lesson values (999, 998, 999, '2020-06-20T09:00:00-07:00')"

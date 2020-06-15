@@ -24,6 +24,6 @@ export class Lesson {
   @JoinColumn({ name: 'teacherId' })
   teacher: User;
 
-  @Column({ type: 'timestamp' })
+  @Column({ length: 25 })
   datetime: string;
 }

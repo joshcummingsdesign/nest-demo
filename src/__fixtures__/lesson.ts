@@ -6,7 +6,7 @@ export const lesson: Partial<Lesson> = {
   id: 999,
   studentId: 998,
   teacherId: 999,
-  datetime: '2020-06-20T23:00:00.000Z',
+  datetime: '2020-06-20T09:00:00-07:00',
 };
 
 export const lessons: Partial<Lesson>[] = [
@@ -14,11 +14,11 @@ export const lessons: Partial<Lesson>[] = [
     id: 999,
     studentId: 998,
     teacherId: 999,
-    datetime: '2020-06-20T23:00:00.000Z',
+    datetime: '2020-06-20T09:00:00-07:00',
   },
 ];
 
 export const bookLessonDto: BookLessonDto = {
   teacherId: teacher.id,
-  datetime: '2020-06-20T17:00:00Z',
+  datetime: '2020-06-20T10:00:00-07:00',
 };
