@@ -81,8 +81,14 @@ export class LessonService {
   }
 
   async delete(userId: number, id: number): Promise<Lesson> {
-    // TODO: Update the teacher's availability when cancelling
     const lesson = await this.findOne(userId, id);
+
+    await this.availabilityService.update(
+      lesson.teacherId,
+      lesson.datetime,
+      true,
+    );
+
     await this.lessonRepository.delete(id);
     return lesson;
   }

@@ -133,6 +133,11 @@ describe('LessonService', () => {
       expect(await lessonService.delete(student.id, lesson.id)).toBe(lesson);
       expect(lessonService.findOne).toHaveBeenCalledTimes(1);
       expect(lessonRepository.delete).toHaveBeenCalledTimes(1);
+      expect(availabilityService.update).toHaveBeenCalledWith(
+        lesson.teacherId,
+        lesson.datetime,
+        true,
+      );
     });
   });
 });
