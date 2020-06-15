@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 
-describe('UserModule (e2e)', () => {
+describe('Teacher (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -16,13 +16,17 @@ describe('UserModule (e2e)', () => {
     app.init();
   });
 
-  it('GET /api/v1/users', async () => {
-    const res = await request(app.getHttpServer())
-      .get('/api/v1/users')
-      .expect(200);
-
-    expect(res.body).toMatchSnapshot();
+  it('should create availability', async () => {
+    expect(1).toEqual(1);
   });
+
+  // --- Teacher flow
+  // -- Availability
+  //  Create availability
+  // View all availability
+  // Delete availability
+  // -- Lessons
+  // View all lessons
 
   afterAll(async () => {
     await app.close();
