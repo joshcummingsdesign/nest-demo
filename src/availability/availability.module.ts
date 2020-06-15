@@ -6,7 +6,7 @@ import { AvailabilityController } from './availability.controller';
 import { LessonModule } from '../lesson/lesson.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Availability]), LessonModule],
+  imports: [TypeOrmModule.forFeature([Availability])],
   controllers: [AvailabilityController],
   providers: [AvailabilityService],
 })
