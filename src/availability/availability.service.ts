@@ -54,12 +54,21 @@ export class AvailabilityService {
     return availability;
   }
 
-  async findByDatetime(
-    userId: number,
-    datetime: string,
-  ): Promise<Availability> {
+  findByDatetime(userId: number, datetime: string): Promise<Availability> {
     return this.availabilityRepository.findOne({
       where: { userId, datetime },
+    });
+  }
+
+  async update(
+    userId: number,
+    datetime: string,
+    available: boolean,
+  ): Promise<Availability> {
+    const availability = await this.findByDatetime(userId, datetime);
+    return this.availabilityRepository.save({
+      ...availability,
+      available,
     });
   }
 

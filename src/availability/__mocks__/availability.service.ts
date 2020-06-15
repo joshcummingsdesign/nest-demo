@@ -5,5 +5,6 @@ export const mockAvailabilityService = jest.fn().mockImplementation(() => ({
   findAll: jest.fn(() => Promise.resolve(availabilities)),
   findOne: jest.fn(() => Promise.resolve(availability)),
   findByDatetime: jest.fn(() => Promise.resolve(availability)),
+  update: jest.fn(() => Promise.resolve(availability)),
   delete: jest.fn(() => Promise.resolve(availability)),
 }));

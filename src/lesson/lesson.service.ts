@@ -43,7 +43,11 @@ export class LessonService {
       throw new ConflictException('Teacher is not available at this time');
     }
 
-    // TODO: Update teacher availability to false
+    await this.availabilityService.update(
+      bookLessonDto.teacherId,
+      bookLessonDto.datetime,
+      false,
+    );
 
     return this.lessonRepository.save({ ...bookLessonDto, studentId: userId });
   }

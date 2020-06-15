@@ -118,6 +118,21 @@ describe('AvailabilityService', () => {
     });
   });
 
+  describe('update', () => {
+    it('should update availability', async () => {
+      jest.spyOn(availabilityService, 'findByDatetime');
+
+      expect(
+        await availabilityService.update(
+          teacher.id,
+          availability.datetime,
+          availability.available,
+        ),
+      ).toBe(availability);
+      expect(availabilityService.findByDatetime).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('delete', () => {
     it('should delete an availability', async () => {
       jest.spyOn(availabilityService, 'findOne');

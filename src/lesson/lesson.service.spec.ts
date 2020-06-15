@@ -57,6 +57,11 @@ describe('LessonService', () => {
       expect(lessonRepository.findOne).toHaveBeenCalledTimes(1);
       expect(lessonRepository.save).toHaveBeenCalledTimes(1);
       expect(availabilityService.findByDatetime).toHaveBeenCalledTimes(1);
+      expect(availabilityService.update).toHaveBeenCalledWith(
+        bookLessonDto.teacherId,
+        bookLessonDto.datetime,
+        false,
+      );
     });
 
     it('should not allow availability in the past', () => {
