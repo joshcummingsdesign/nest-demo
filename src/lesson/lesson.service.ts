@@ -5,27 +5,45 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { parseISO, isBefore } from 'date-fns';
 import { Lesson } from './entities';
 import { BookLessonDto } from './dto';
 import { RoleName, ERole } from '../role/entities';
+import { AvailabilityService } from '../availability/availability.service';
 
 @Injectable()
 export class LessonService {
   constructor(
     @InjectRepository(Lesson)
     private lessonRepository: Repository<Lesson>,
+    private availabilityService: AvailabilityService,
   ) {}
 
   async create(userId: number, bookLessonDto: BookLessonDto): Promise<Lesson> {
-    // TODO: Make sure the teacher is available at this time
-    // TODO: Update availability at this time to false
+    const datetime = parseISO(bookLessonDto.datetime);
+
+    if (isBefore(datetime, Date.now())) {
+      throw new ConflictException('Lesson must be a time in the future');
+    }
+
     const existingLesson = await this.lessonRepository.findOne({
-      datetime: bookLessonDto.datetime,
+      where: { studentId: userId, datetime: parseISO(bookLessonDto.datetime) },
     });
 
     if (existingLesson) {
       throw new ConflictException('A lesson at the given time already exists');
     }
+
+    const teacherAvailability = await this.availabilityService.findByDatetime(
+      bookLessonDto.teacherId,
+      bookLessonDto.datetime,
+    );
+
+    if (!teacherAvailability || !teacherAvailability.available) {
+      throw new ConflictException('Teacher is not available at this time');
+    }
+
+    // TODO: Update teacher availability to false
 
     return this.lessonRepository.save({ ...bookLessonDto, studentId: userId });
   }

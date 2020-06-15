@@ -22,16 +22,16 @@ export class AvailabilityService {
   ): Promise<Availability> {
     const datetime = parseISO(addAvailabilityDto.datetime);
 
+    if (isBefore(datetime, Date.now())) {
+      throw new ConflictException('Availability must be a time in the future');
+    }
+
     const existingAvailability = await this.availabilityRepository.findOne({
       where: { userId, datetime },
     });
 
     if (existingAvailability) {
       throw new ConflictException('Availability at this time already exists');
-    }
-
-    if (isBefore(datetime, Date.now())) {
-      throw new ConflictException('Availability must be a time in the future');
     }
 
     return this.availabilityRepository.save({ ...addAvailabilityDto, userId });
@@ -52,6 +52,15 @@ export class AvailabilityService {
       throw new NotFoundException('Availability not found');
     }
     return availability;
+  }
+
+  async findByDatetime(
+    userId: number,
+    datetime: string,
+  ): Promise<Availability> {
+    return this.availabilityRepository.findOne({
+      where: { userId, datetime },
+    });
   }
 
   async delete(userId: number, id: number): Promise<Availability> {

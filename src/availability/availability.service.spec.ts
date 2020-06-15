@@ -58,12 +58,6 @@ describe('AvailabilityService', () => {
       expect(availabilityRepository.save).toHaveBeenCalledTimes(1);
     });
 
-    it('should not allow duplicate availabilities', () => {
-      expect(
-        availabilityService.create(teacher.id, addAvailabilityDto),
-      ).rejects.toThrow('Availability at this time already exists');
-    });
-
     it('should not allow availability in the past', () => {
       jest
         .spyOn(availabilityRepository, 'findOne')
@@ -71,9 +65,16 @@ describe('AvailabilityService', () => {
 
       expect(
         availabilityService.create(teacher.id, {
+          ...addAvailabilityDto,
           datetime: '2019-06-11T10:00:00Z',
         }),
       ).rejects.toThrow('Availability must be a time in the future');
+    });
+
+    it('should not allow duplicate availabilities', () => {
+      expect(
+        availabilityService.create(teacher.id, addAvailabilityDto),
+      ).rejects.toThrow('Availability at this time already exists');
     });
   });
 
@@ -102,6 +103,18 @@ describe('AvailabilityService', () => {
       expect(
         availabilityService.findOne(teacher.id, availability.id),
       ).rejects.toThrow('Availability not found');
+    });
+  });
+
+  describe('findByDatetime', () => {
+    it('should find an availability by datetime', async () => {
+      expect(
+        await availabilityService.findByDatetime(
+          teacher.id,
+          availability.datetime,
+        ),
+      ).toBe(availability);
+      expect(availabilityRepository.findOne).toHaveBeenCalledTimes(1);
     });
   });
 

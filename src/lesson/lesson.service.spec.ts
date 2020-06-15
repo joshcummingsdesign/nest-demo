@@ -5,10 +5,14 @@ import { Lesson } from './entities';
 import { LessonService } from './lesson.service';
 import { mockLessonRepository } from './__mocks__/lesson.repository';
 import { student, lesson, lessons, bookLessonDto } from '../__fixtures__';
+import { AvailabilityService } from '../availability/availability.service';
+import { mockAvailabilityService } from '../availability/__mocks__/availability.service';
 
 describe('LessonService', () => {
   let lessonService: LessonService;
   let lessonRepository: Repository<Lesson>;
+  let availabilityService: AvailabilityService;
+  let realDateNow: () => number;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,6 +22,10 @@ describe('LessonService', () => {
           provide: getRepositoryToken(Lesson),
           useFactory: mockLessonRepository,
         },
+        {
+          provide: AvailabilityService,
+          useFactory: mockAvailabilityService,
+        },
       ],
     }).compile();
 
@@ -25,6 +33,17 @@ describe('LessonService', () => {
     lessonRepository = module.get<Repository<Lesson>>(
       getRepositoryToken(Lesson),
     );
+    availabilityService = module.get<AvailabilityService>(AvailabilityService);
+  });
+
+  beforeAll(() => {
+    realDateNow = Date.now.bind(global.Date);
+    const dateNowStub = jest.fn(() => 1592164576240);
+    global.Date.now = dateNowStub;
+  });
+
+  afterAll(() => {
+    global.Date.now = realDateNow;
   });
 
   describe('create', () => {
@@ -32,21 +51,48 @@ describe('LessonService', () => {
       jest.spyOn(lessonRepository, 'findOne').mockResolvedValue(undefined);
       jest.spyOn(lessonRepository, 'save');
 
-      expect(await lessonService.create(1, bookLessonDto)).toBe(lesson);
+      expect(await lessonService.create(student.id, bookLessonDto)).toBe(
+        lesson,
+      );
       expect(lessonRepository.findOne).toHaveBeenCalledTimes(1);
       expect(lessonRepository.save).toHaveBeenCalledTimes(1);
+      expect(availabilityService.findByDatetime).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not allow availability in the past', () => {
+      jest.spyOn(lessonRepository, 'findOne').mockResolvedValue(undefined);
+
+      expect(
+        lessonService.create(student.id, {
+          ...bookLessonDto,
+          datetime: '2019-06-11T10:00:00Z',
+        }),
+      ).rejects.toThrow('Lesson must be a time in the future');
     });
 
     it('should throw if lesson exists', () => {
-      expect(lessonService.create(1, bookLessonDto)).rejects.toThrow(
+      expect(lessonService.create(student.id, bookLessonDto)).rejects.toThrow(
         'A lesson at the given time already exists',
+      );
+    });
+
+    it('should throw if teacher is not available', () => {
+      jest.spyOn(lessonRepository, 'findOne').mockResolvedValue(undefined);
+      jest
+        .spyOn(availabilityService, 'findByDatetime')
+        .mockResolvedValue(undefined);
+
+      expect(lessonService.create(student.id, bookLessonDto)).rejects.toThrow(
+        'Teacher is not available at this time',
       );
     });
   });
 
   describe('findAll', () => {
     it('should find all lessons', async () => {
-      expect(await lessonService.findAll(1, student.role.name)).toBe(lessons);
+      expect(await lessonService.findAll(student.id, student.role.name)).toBe(
+        lessons,
+      );
       expect(lessonRepository.find).toHaveBeenCalledTimes(1);
     });
   });

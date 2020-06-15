@@ -20,5 +20,5 @@ export const lessons: Partial<Lesson>[] = [
 
 export const bookLessonDto: BookLessonDto = {
   teacherId: teacher.id,
-  datetime: '2020-06-11T10:00:00Z',
+  datetime: '2020-06-20T17:00:00Z',
 };
