@@ -2,7 +2,7 @@
 
 [![joshcummingsdesign](https://circleci.com/gh/joshcummingsdesign/booklesson-api-rest.svg?style=svg)](https://circleci.com/gh/joshcummingsdesign/booklesson-api-rest)
 
-A demo music lesson booking REST API built with [NestJS](https://nestjs.com/).
+A music lesson booking REST API built with [NestJS](https://nestjs.com/).
 
 ## Documentation
 
