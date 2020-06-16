@@ -1,0 +1,49 @@
+version: 2.1
+orbs:
+  node: 'circleci/node@3.0.0'
+  heroku: circleci/heroku@1.0.1
+jobs:
+  test-and-deploy:
+    docker:
+      - image: circleci/node:13.12.0
+      - image: circleci/postgres:12.3
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: booklesson
+    steps:
+      - checkout
+      - run:
+          name: Install psql
+          command: sudo apt install postgresql-client
+      - node/install:
+          node-version: '13.12.0'
+          install-npm: false
+          install-yarn: true
+          yarn-version: '1.22.4'
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: Run unit tests
+          command: yarn test
+      - run:
+          name: Wait for database connection
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Provision database
+          command: ./test/scripts/provision-database.sh
+      - run:
+          name: Run e2e tests
+          command: |
+            export JWT_PRIVATE_KEY=`cat test/keys/private.pem`
+            export JWT_PUBLIC_KEY=`cat test/keys/public.pem`
+            yarn test:e2e
+      - heroku/deploy-via-git:
+        filters:
+          branches:
+            only:
+              - master
+workflows:
+  test-and-deploy:
+    jobs:
+      - test-and-deploy
