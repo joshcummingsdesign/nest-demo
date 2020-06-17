@@ -1,12 +1,16 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
+import { formatISO } from 'date-fns';
 import { AppModule } from '../src/app.module';
 import { teacherAuth, addAvailabilityDto } from '../src/__fixtures__';
 
 describe('Teacher (e2e)', () => {
   let app: INestApplication;
   let token: string;
+  const datetime = formatISO(
+    new Date(new Date().getTime() + 24 * 60 * 60 * 1000),
+  );
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,7 +42,7 @@ describe('Teacher (e2e)', () => {
   it('should create, read, delete availability', async () => {
     const createRes = await request(app.getHttpServer())
       .post('/api/v1/availability')
-      .send(addAvailabilityDto)
+      .send({ ...addAvailabilityDto, datetime })
       .set('Authorization', token)
       .expect(201);
 
