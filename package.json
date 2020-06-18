@@ -70,7 +70,9 @@
     "eslint": "^7.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.20.2",
+    "husky": "^4.2.5",
     "jest": "^25.5.4",
+    "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "supertest": "^4.0.2",
     "ts-jest": "^25.5.1",
@@ -93,5 +95,15 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "lint-staged": {
+    "./**/*.{ts,tsx,js,json}": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
