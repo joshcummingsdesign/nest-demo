@@ -14,6 +14,7 @@ import { InstrumentModule } from './instrument/instrument.module';
 import { UserModule } from './user/user.module';
 import { LessonModule } from './lesson/lesson.module';
 import { AvailabilityModule } from './availability/availability.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AvailabilityModule } from './availability/availability.module';
     UserModule,
     LessonModule,
     AvailabilityModule,
+    EmailModule,
   ],
   providers: [
     {

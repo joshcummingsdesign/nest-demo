@@ -10,6 +10,10 @@ export enum EConfigOptions {
   JWT_EXPIRE_TIME = 'JWT_EXPIRE_TIME',
   JWT_PRIVATE_KEY = 'JWT_PRIVATE_KEY',
   JWT_PUBLIC_KEY = 'JWT_PUBLIC_KEY',
+  AWS_ACCESS_KEY_ID = 'AWS_ACCESS_KEY_ID',
+  AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY',
+  AWS_SES_REGION = 'AWS_SES_REGION',
+  AWS_SES_EMAIL = 'AWS_SES_EMAIL',
 }
 
 const configOptionsSchema: { [key in EConfigOptions]: any } = {
@@ -22,6 +26,10 @@ const configOptionsSchema: { [key in EConfigOptions]: any } = {
   JWT_EXPIRE_TIME: Joi.string().required(),
   JWT_PRIVATE_KEY: Joi.string().required(),
   JWT_PUBLIC_KEY: Joi.string().required(),
+  AWS_ACCESS_KEY_ID: Joi.string().required(),
+  AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+  AWS_SES_REGION: Joi.string().required(),
+  AWS_SES_EMAIL: Joi.string().required(),
 };
 
 export const validationSchema = Joi.object(configOptionsSchema).required();
