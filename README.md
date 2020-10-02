@@ -6,7 +6,7 @@ A music lesson booking REST API built with [NestJS](https://nestjs.com/).
 
 ## Documentation
 
-[Check out the API documentation.](https://documenter.getpostman.com/view/5657753/SzzhdJ6t)
+[Check out the API documentation.](https://documenter.getpostman.com/view/12959650/TVReeWgu)
 
 ## Requirements
 
